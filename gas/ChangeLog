@@ -1,8 +1,7 @@
-2004-02-18  David Mosberger  <davidm@hpl.hp.com>
+2004-02-26  Eric Christopher  <echristo@redhat.com>
 
-	* config/tc-ia64.c (ia64_flush_insns): In addition to prologue,
-	body, and endp, allow unwind records which do not have a "t"
-	(time/instruction) field.
+	* config/tc-mips.c (mips_dwarf2_addr_size): New.
+	* config/tc-mips.h (DWARF2_ADDR_SIZE): Use.
 
 2004-02-17  Petko Manolov  <petkan@nucleusys.com>
 
@@ -173,7 +172,7 @@
 2004-01-11  Tom Rix   <tcrix@worldnet.att.net>
 
 	* config/tc-m68hc11.c (build_indexed_byte): movb and movw cannot
-	be relaxed, use fixup. 
+	be relaxed, use fixup.
 	(md_apply_fix3): Use 5 bit reloc from movb and movw fixup.
 
 2004-01-19  Jakub Jelinek  <jakub@redhat.com>
@@ -195,7 +194,7 @@
 	* configure: Regenerate.
 
 2004-01-12  Anil Paranjpe  <anilp1@KPITCummins.com>
-	
+
 	* config/tc-h8300.c (build_bytes): Apply relaxation to bit
 	manipulation insns.
 
