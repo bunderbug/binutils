@@ -1,65 +1,13 @@
-2002-03-07  H.J. Lu  (hjl@gnu.org)
+2002-04-07  Andrew Cagney  <ac131313@redhat.com>
 
-	* coff-sh.c (shcoff_reloc_map): Use bfd_reloc_code_real_type
-	as the type for bfd_reloc_val.
-
-2002-03-05  John David Anglin  <dave@hiauly1.hia.nrc.ca>
-
-	* elf-hppa.h (elf_hppa_is_dynamic_loader_symbol): New function.
-	(elf_hppa_relocate_section): Ignore undefined dynamic loader symbols.
-	(elf_hppa_final_link_relocate): Correct relocations for indirect
-	references to local data through the DLT.  Fix .opd creation for
-	local symbols using R_PARISC_LTOFF_FPTR32 and R_PARISC_FPTR64
-	relocations.  Use e_lsel selector for R_PARISC_DLTIND21L,
-	R_PARISC_LTOFF_FPTR21L and R_PARISC_LTOFF_TP21L as per
-	"Processor-Specific ELF for PA_RISC, Version 1.43" document.
-	Similarly, use e_rsel for DLT and LTOFF 'R' relocations.
-	* elf32-hppa.c (final_link_relocate): Revise relocation selectors
-	as per "Processor-Specific ELF for PA_RISC, Version 1.43" document.
-
-2002-03-05  Jakub Jelinek  <jakub@redhat.com>
-
-	* merge.c (_bfd_merge_sections): Don't segfault if there
-	is nothing to merge due to GC.
-
-2002-03-05  Alan Modra  <amodra@bigpond.net.au>
-
-	* elf32-hppa.c (clobber_millicode_symbols): Remove hack to keep
-	symbols that have been forced local.
-
-	* elflink.h (elf_bfd_final_link): Call elf_link_output_extsym
-	to output forced local syms for non-shared link.
-	(elf_link_output_extsym): Tweak condition for calling backend
-	adjust_dynamic_symbol so that previous behaviour is kept.
-	Whitespace changes throughout file.
-
-2002-03-04  H.J. Lu <hjl@gnu.org>
-
-	* elf.c (bfd_section_from_shdr): Handle special sections,
-	.init_array, .fini_array and .preinit_array.
-	(elf_fake_sections): Likewise.
-
-	* elflink.h (NAME(bfd_elf,size_dynamic_sections)): Create the
-	DT entry only if the section is in output for .init_array,
-	.fini_array and .preinit_array. Complain about .preinit_array
-	section in DSO.
-	(elf_bfd_final_link): Warn zero size for .init_array,
-	.fini_array and .preinit_array sections.
-
-	* elfxx-ia64.c (elfNN_ia64_section_from_shdr): Remove
-	SHT_INIT_ARRAY, SHT_FINI_ARRAY and SHT_PREINIT_ARRAY.
-	(elfNN_ia64_fake_sections): Remove .init_array, .fini_array and
-	.preinit_array.
-
-2002-03-04  Alan Modra  <amodra@bigpond.net.au>
-
-	* configure.in (WIN32LIBADD): Don't eval PICFLAG assignment.
-	* configure: Regenerate.
+	* configure.in: Only define AIX_CORE_DUMPX_CORE when AIX version
+	is greater or equal to 4.3.3.
+	* configure: Re-generate.
 
 2002-03-02  Tom Rix  <trix@redhat.com>
 
-	* coff64-rs6000.c (xcoff64_howto_table): Replace howto types with
-	symbolic equiv.
+	* coff64-rs6000.c (xcoff64_howto_table): Replace howto types with 
+	symbolic equiv. 
 	* coff-rs6000.c (xcoff_howto_table): Same.
 
 2002-03-01  David Mosberger  <davidm@hpl.hp.com>
