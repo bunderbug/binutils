@@ -1,47 +1,7 @@
-2000-04-13  Alan Modra  <alan@linuxcare.com.au>
+Wed Apr 19 16:28:40 2000  Andrew Cagney  <cagney@b1.cygnus.com>
 
-	* elf32-hppa.h: Update copyright date.
+	* bfd-in2.h: Re-generate.
 
-	* elf32-fr30.c (fr30_elf_i20_reloc): Don't use U suffix.
-	* elf32-mips.c (_bfd_mips_elf_relocate_section): And here.
-
-	* elf32-d30v.c (MAX32): Don't use LL suffix.
-	(MIN32): Define in terms of MAX32.
-	(bfd_elf_d30v_reloc): Make relocation a bfd_signed_vma.
-
-	* coff-a29k.c (SIGN_EXTEND_HWORD): Replace with more concise
-	expression.
-
-	* peicode.h (pe_ILF_build_a_bfd): Remove UL from hex constants.
-
-2000-04-12  Alan Modra  <alan@linuxcare.com.au>
-
-	* dep-in.sed: Match space before file name, not after.
-
-	* Makefile.am: Regenerate dependencies.
-	* Makefile.in: Regenerate.
-
-	* reloc.c (_bfd_relocate_contents): In complain_overflow_bitfield
-	case, allow address wrap-around stupidly removed 2000-03-17.  Sign
-	extend without an if statement.
-
-2000-04-11  Alan Modra  <alan@linuxcare.com.au>
-
-	* coff-mips.c (mips_gprel_reloc): Test for 16 bit range using
-	signed quantites.
-	* elf32-mips.c (gprel16_with_gp): Likewise.
-	* elf32-hppa.c (elf32_hppa_bfd_final_link_relocate): Test range
-	here using -0x40000, not (int)0xfffc0000.
-	(elf32_hppa_size_of_stub): Likewise.
-
-2000-04-11  Timothy Wall  <twall@cygnus.com>
-
-	* coff-tic54x.c: Now builds with all targets.
-	* Makefile.am: Add coff/tic54x.h to coff-tic54x.o dependencies.
-	* Makefile.in: Regenerate.
-	* coffcode.h (coff_set_arch_mach_hook): Eliminate warning on
-	unitialized variable.
-	
 Fri Apr  7 15:56:57 2000  Andrew Cagney  <cagney@b1.cygnus.com>
  
 	* configure.in (WARN_CFLAGS): Set to -W -Wall by default.  Add
@@ -6141,7 +6101,7 @@ Mon Feb 23 19:31:19 1998  Ian Lance Taylor  <ian@cygnus.com>
 1998-02-23 15:53  Richard Henderson  <rth@cygnus.com>
 
 	* elf32-i386.c (elf_i386_relocate_section): A pc-relative
-	relocation against a non-local symbol should not have a dynamic
+	relocation against a now-local symbol should not have a dynamic
 	relocation.
 
 Mon Feb 23 16:17:08 1998  Ian Lance Taylor  <ian@cygnus.com>
