@@ -1,19 +1,8 @@
-2001-07-30  Andreas Jaeger  <aj@suse.de>
+Tue Aug 21 12:35:04 2001  Christopher Faylor <cgf@cygnus.com>
 
-	* regex.c: Declare wcs functions only if compiling with
-	MBS_SUPPORT.
-	Don't use #elif for traditional C.
-
-2001-07-23  Ulrich Drepper  <drepper@redhat.com>
-
-	* regex.c: Revamp memory allocation for WCHAR functions to
-	not use too much stack.
-
-2001-07-30  Andreas Jaeger  <aj@suse.de>
-
-	* regex.c: Declare wcs functions only if compiling with
-	MBS_SUPPORT.
-	Don't use #elif for traditional C.
+	* configure.in: Need to set HAVE_SYS_ERRLIST and HAVE_SYS_NERR whenever
+	hosting on cygwin.
+	* configure: Regenerate.
 
 2001-07-25  Daniel Jacobowitz  <drow@mvista.com>
 
