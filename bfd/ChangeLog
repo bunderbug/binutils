@@ -1,111 +1,3 @@
-2004-03-27  Alan Modra  <amodra@bigpond.net.au>
-
-	* Makefile.am: Remove all mention of elflink.h.
-	* Makefile.in: Regenerate.
-	* bfd-in.h (bfd_elf_discard_info): Declare.
-	(bfd_elf32_discard_info, bfd_elf64_discard_info): Delete.
-	* bfd-in2.h: Regenerate.
-	* elf-bfd.h (bfd_elf32_print_symbol, bfd_elf64_print_symbol,
-	bfd_elf32_link_record_dynamic_symbol,
-	bfd_elf64_link_record_dynamic_symbol,
-	_bfd_elf_link_record_dynamic_symbol, bfd_elf32_bfd_final_link,
-	bfd_elf64_bfd_final_link, elf_link_record_local_dynamic_symbol,
-	_bfd_elf32_link_record_local_dynamic_symbol,
-	_bfd_elf64_link_record_local_dynamic_symbol,
-	_bfd_elf32_gc_sections, _bfd_elf32_gc_common_finalize_got_offsets,
-	_bfd_elf32_gc_common_final_link, _bfd_elf64_gc_common_final_link,
-	_bfd_elf32_gc_record_vtinherit, _bfd_elf32_gc_record_vtentry,
-	_bfd_elf64_gc_sections, _bfd_elf64_gc_common_finalize_got_offsets,
-	_bfd_elf64_gc_record_vtinherit, _bfd_elf64_gc_record_vtentry,
-	_bfd_elf32_reloc_symbol_deleted_p,
-	_bfd_elf64_reloc_symbol_deleted_p): Delete.
-	(bfd_elf_link_record_dynamic_symbol,
-	bfd_elf_link_record_local_dynamic_symbol,
-	bfd_elf_final_link, bfd_elf_gc_sections,
-	bfd_elf_gc_record_vtinherit, bfd_elf_gc_record_vtentry,
-	bfd_elf_gc_common_finalize_got_offsets, bfd_elf_gc_common_final_link,
-	bfd_elf_reloc_symbol_deleted_p): Declare.
-	(WILL_CALL_FINISH_DYNAMIC_SYMBOL): Define.
-	* elf32-arm.h: Update for changed function names.  Remove local
-	WILL_CALL_FINISH_DYNAMIC_SECTION define.
-	* elf-hppa.h, elf-m10300.c, elf32-cris.c, elf32-d10v.c, elf32-dlx.c,
-	* elf32-fr30.c, elf32-frv.c, elf32-h8300.c, elf32-hppa.c, elf32-i386.c,
-	* elf32-iq2000.c, elf32-m32r.c, elf32-m68hc1x.c, elf32-m68k.c,
-	* elf32-mcore.c, elf32-openrisc.c, elf32-ppc.c, elf32-s390.c,
-	* elf32-sh.c, elf32-sparc.c, elf32-v850.c, elf32-vax.c,
-	* elf32-xstormy16.c, elf32-xtensa.c, elf64-alpha.c, elf64-hppa.c,
-	* elf64-mmix.c, elf64-ppc.c, elf64-s390.c, elf64-sh64.c, elf64-sparc.c,
-	* elf64-x86-64.c, elfxx-ia64.c, elfxx-mips.c, elfxx-target.h: Likewise.
-	* elfxx-target.h (bfd_elfNN_bfd_final_link): Define.
-	(bfd_elfNN_print_symbol): Define.
-	* elfcode.h: Don't include elflink.h.
-	(elf_bfd_discard_info, elf_reloc_symbol_deleted_p,
-	elf_link_record_dynamic_symbol, elf_bfd_final_link, elf_gc_sections,
-	elf_gc_common_finalize_got_offsets, elf_gc_common_final_link,
-	elf_gc_record_vtinherit, elf_gc_record_vtentry,
-	elf_link_record_local_dynamic_symbol): Don't define.
-	* elflink.c: Update for changed function names.  Move elflink.h
-	code here.
-	* elflink.h: Delete file.
-	* po/SRC-POTFILES.in: Regenerate.
-	* po/bfd.pot: Regenerate.
-
-2004-03-27  Alan Modra  <amodra@bigpond.net.au>
-
-	* elf64-mmix.c (mmix_elf_relocate_section): Restore code setting
-	"name" for global syms accidentally removed in 2004-03-20 change.
-
-2004-03-27  Alan Modra  <amodra@bigpond.net.au>
-
-	* elf-bfd.h (struct elf_reloc_cookie): Add r_sym_shift field.
-	* elflink.h: Replace all occurrences of sizeof (Elf_External_*)
-	where Elf_External_* is different for 64 and 32 bit, with
-	corresponding elf_size_info field.
-	(struct elf_final_link_info): Use "bfd_byte *" instead
-	of "Elf_External_Sym *" for external_syms and symbuf.
-	(elf_link_adjust_relocs): Set up r_type_mask and r_sym_shift local
-	vars and use instead of ELF_R_INFO and ELF_R_TYPE macros.
-	(struct elf_link_sort_rela): Add "sym_mask" alias for "offset".
-	(elf_link_sort_cmp1): Use sym_mask field instead of ELF_R_SYM.
-	(elf_link_sort_cmp2): Adjust.
-	(elf_link_sort_relocs): Set up r_sym_mask local var instead of
-	using ELF_R_SYM macro.  Set u.sym_mask.
-	(elf_bfd_final_link): Call _bfd_elf_stringtab_init instead of macro
-	version, elf_stringtab_init.  Ditto for bfd_section_from_elf_index
-	vs. section_from_elf_index.  Adjust Elf_External_Sym pointer
-	arithmetic.  Pass bed to elf_link_flush_output_syms.  Adjust
-	Elf_External_Dyn pointer arithmentic.  Use bed swap_dyn_in and
-	swap_syn_out functions.  Rearrange dyn swap in/out switch.
-	(elf_link_output_sym): Adjust Elf_External_Sym pointer arithmentic.
-	Pass bed to elf_link_flush_output_syms.  Use bed swap_symbol_out.
-	(elf_link_flush_output_syms): Add elf_backend_data arg.
-	(elf_link_check_versioned_symbol): Likewise.
-	(elf_link_output_extsym): Pass bed to elf_link_check_versioned_symbol.
-	Adjust Elf_External_Sym pointer arithmetic.  Use bed swap_symbol_out.
-	(elf_link_input_bfd): Use bfd_section_from_elf_index.  Set up
-	r_type_mask and r_sym_shift local vars and use instead of ELF_R_SYM,
-	ELF_R_TYPE and ELF_R_INFO macros.
-	(elf_reloc_link_order): Select ELF32_R_INFO or ELF64_R_INFO invocation
-	based on size rather than using ELF_R_INFO.
-	(elf_gc_mark): Set up r_sym_shift local var and use instead of
-	ELF_R_SYM macro.
-	(struct alloc_got_off_arg): New.
-	(elf_gc_common_finalize_got_offsets): Use elf_size_info instead of
-	ARCH_SIZE.  Pass get entry size down to elf_gc_allocate_got_offsets.
-	(elf_gc_allocate_got_offsets): Adjust.
-	(elf_reloc_symbol_deleted_p): Usee cookie.r_sym_shift instead of
-	ELF_R_SYM.  Use bfd_section_from_elf_index.
-	(elf_bfd_discard_info): Set cookie.r_sym_shift.
-	* elfcode.h (elf_stringtab_init, section_from_elf_index): Delete.
-	(elf_slurp_symbol_table): Use bfd_section_from_elf_index.
-
-2004-03-26  Stan Shebs  <shebs@apple.com>
-
-	Remove MPW support, no longer used.
-	* config.bfd (powerpc-*-mpw*): Remove configuration.
-	* mpw-config.in, mpw-make.sed: Remove files.
-	* ecoffswap.h [MPW_C]: Remove MPW-C-friendly version of code.
-
 2004-03-26  Alan Modra  <amodra@bigpond.net.au>
 
 	* elf64-ppc.c (elf_backend_add_symbol_hook): Define.
@@ -161,7 +53,7 @@
 
 	* elflink.h (elf_link_add_object_symbols): Add DT_NEEDED for as-needed
 	and chained shared libs only if dynsym.  Clear dynsym on forced-local.
-
+	
 	* elf-bfd.h (_bfd_elf_add_dynamic_entry): Declare.
 	(bfd_elf32_add_dynamic_entry, bfd_elf64_add_dynamic_entry): Delete.
 	(_bfd_elf_add_dt_needed_tag): Declare.
@@ -222,7 +114,7 @@
 	(elf_xtensa_size_dynamic_sections): Don't add DT_TEXTREL entry.
 	(elf_xtensa_relocate_section): Read literal tables and check for
 	dynamic relocations in read-only sections and not in literal pools.
-
+	
 2004-03-23  Alan Modra  <amodra@bigpond.net.au>
 
 	PR 51.

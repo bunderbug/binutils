@@ -1267,12 +1267,12 @@ elf32_sparc_check_relocs (abfd, info, sec, relocs)
 	  break;
 
 	case R_SPARC_GNU_VTINHERIT:
-	  if (!bfd_elf_gc_record_vtinherit (abfd, sec, h, rel->r_offset))
+	  if (!_bfd_elf32_gc_record_vtinherit (abfd, sec, h, rel->r_offset))
 	    return FALSE;
 	  break;
 
 	case R_SPARC_GNU_VTENTRY:
-	  if (!bfd_elf_gc_record_vtentry (abfd, sec, h, rel->r_addend))
+	  if (!_bfd_elf32_gc_record_vtentry (abfd, sec, h, rel->r_addend))
 	    return FALSE;
 	  break;
 
@@ -1592,6 +1592,17 @@ elf32_sparc_adjust_dynamic_symbol (info, h)
   return TRUE;
 }
 
+/* This is the condition under which finish_dynamic_symbol will be called
+   from elflink.h.  If elflink.h doesn't call our finish_dynamic_symbol
+   routine, we'll need to do something about initializing any .plt and .got
+   entries in relocate_section.  */
+#define WILL_CALL_FINISH_DYNAMIC_SYMBOL(DYN, INFO, H)			\
+  ((DYN)								\
+   && ((INFO)->shared							\
+       || ((H)->elf_link_hash_flags & ELF_LINK_FORCED_LOCAL) == 0)	\
+   && ((H)->dynindx != -1						\
+       || ((H)->elf_link_hash_flags & ELF_LINK_FORCED_LOCAL) != 0))
+
 /* Allocate space in .plt, .got and associated reloc sections for
    dynamic relocs.  */
 
@@ -1625,11 +1636,11 @@ allocate_dynrelocs (h, inf)
       if (h->dynindx == -1
 	  && (h->elf_link_hash_flags & ELF_LINK_FORCED_LOCAL) == 0)
 	{
-	  if (! bfd_elf_link_record_dynamic_symbol (info, h))
+	  if (! bfd_elf32_link_record_dynamic_symbol (info, h))
 	    return FALSE;
 	}
 
-      if (WILL_CALL_FINISH_DYNAMIC_SYMBOL (1, info->shared, h))
+      if (WILL_CALL_FINISH_DYNAMIC_SYMBOL (1, info, h))
 	{
 	  asection *s = htab->splt;
 
@@ -1694,7 +1705,7 @@ allocate_dynrelocs (h, inf)
       if (h->dynindx == -1
 	  && (h->elf_link_hash_flags & ELF_LINK_FORCED_LOCAL) == 0)
 	{
-	  if (! bfd_elf_link_record_dynamic_symbol (info, h))
+	  if (! bfd_elf32_link_record_dynamic_symbol (info, h))
 	    return FALSE;
 	}
 
@@ -1713,7 +1724,7 @@ allocate_dynrelocs (h, inf)
 	htab->srelgot->_raw_size += sizeof (Elf32_External_Rela);
       else if (tls_type == GOT_TLS_GD)
 	htab->srelgot->_raw_size += 2 * sizeof (Elf32_External_Rela);
-      else if (WILL_CALL_FINISH_DYNAMIC_SYMBOL (dyn, info->shared, h))
+      else if (WILL_CALL_FINISH_DYNAMIC_SYMBOL (dyn, info, h))
 	htab->srelgot->_raw_size += sizeof (Elf32_External_Rela);
     }
   else
@@ -1766,7 +1777,7 @@ allocate_dynrelocs (h, inf)
 	  if (h->dynindx == -1
 	      && (h->elf_link_hash_flags & ELF_LINK_FORCED_LOCAL) == 0)
 	    {
-	      if (! bfd_elf_link_record_dynamic_symbol (info, h))
+	      if (! bfd_elf32_link_record_dynamic_symbol (info, h))
 		return FALSE;
 	    }
 
@@ -2228,7 +2239,7 @@ elf32_sparc_relocate_section (output_bfd, info, input_bfd, input_section,
 	      BFD_ASSERT (off != (bfd_vma) -1);
 	      dyn = elf_hash_table (info)->dynamic_sections_created;
 
-	      if (! WILL_CALL_FINISH_DYNAMIC_SYMBOL (dyn, info->shared, h)
+	      if (! WILL_CALL_FINISH_DYNAMIC_SYMBOL (dyn, info, h)
 		  || (info->shared
 		      && (info->symbolic
 			  || h->dynindx == -1
