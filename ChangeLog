@@ -1,42 +1,6 @@
-2004-03-12  Eric Botcazou  <ebotcazou@gcc.gnu.org>
-            Paolo Bonzini  <bonzini@gnu.org>
+2004-04-02  Andrew Cagney  <cagney@redhat.com>
 
-	PR bootstrap/14522
-	* configure.in: Cope with shells that do not support unquoted ^
-	* configure: Regenerate.
-
-2004-03-11  Eric Botcazou  <ebotcazou@gcc.gnu.org>
-            Paolo Bonzini  <bonzini@gnu.org>
-
-	PR bootstrap/14522
-	* configure.in: Cope with shell that do not support nesting
-	quotes inside quoted backquote substitutions.
-	* configure: Regenerate.
-
-2004-03-10  Andrew Pinski  <pinskia@physics.uc.edu>
-
-	PR bootstrap/14522
-	* configure.in: Fix escaping of $.
-	* configure: Regenerate.
-
-2004-03-11  Nathanael Nerode  <neroden@gcc.gnu.org>
-
-	* configure: Regenerate.
-
-2004-03-08  Paolo Bonzini  <bonzini@gnu.org>
-
-	PR ada/14131
-	Move language detection to the top level.
-	* configure.in: Find default values for the tools as
-	soon as possible.  Disable ada if GNAT is not found.
-	Emit error message about missing languages.  Expand
-	--enable-languages=all for the gcc subdirectory.
-
-2004-03-01  Richard Sandiford  <rsandifo@redhat.com>
-
-	* configure.in (mips64*-*-linux*): Override mips*-*-linux* case
-	and disable libgcj.
-	* configure: Regenerated.
+	* src-release (DEVO_SUPPORT): Delete MPW files.
 
 2004-02-28  Nathanael Nerode  <neroden@gcc.gnu.org>
 
