@@ -1,16 +1,17 @@
-2005-03-25  Bob Wilson  <bob.wilson@acm.org>
+2005-03-29  Julian Brown  <julian@codesourcery.com>
 
-	* config/tc-xtensa.c (use_longcalls): Delete.
-	(xg_symbolic_immeds_fit): Check for direct calls and return TRUE if
-	the use_longcalls flag is set.  Do this before checking the segment.
-	(xg_expand_assembly_insn): Rearrange to use new do_expand flag.  Never
-	expand direct calls at this point.
-	(xtensa_set_frag_assembly_state): Set use_longcalls flag.
-	(xtensa_find_unmarked_state_frags): Likewise.
-	(md_assemble): Do not disable longcalls by setting is_specific_opcode.
-	(xg_assemble_vliw_tokens): Switch frags when use_longcalls changes.
-	(convert_frag_immed): Remove unnecessary check of is_specific_opcode.
-	* config/tc-xtensa.h (xtensa_frag_type): Add use_longcalls flag.
+	* config/tc-arm.c (marked_pr_dependency): New bitmap, bit N indicates
+	whether personality routine index N has been output for this section.
+	(mapping_state): tc_segment_info_data now struct not enum.
+	(arm_elf_change_section): Likewise, and marked_pr_dependency is now
+	handled on section change.
+	(create_unwind_entry): Previous code to output dependency removed.
+	(s_arm_unwind_fnend): Output dependency if it hasn't been done already
+	for this section.
+	* config/tc-arm.h (TC_SEGMENT_INFO_TYPE): Redefined as struct
+	arm_segment_info_type.
+	(arm_segment_info_type): New struct.
+	* testsuite/gas/arm/unwind.d: Update expected output.
 
 2005-03-21  Bob Wilson  <bob.wilson@acm.org>
 
