@@ -1,19 +1,9 @@
-2004-07-14  John David Anglin  <dave.anglin@nrc-cnrc.gc.ca>
+2004-07-31  Joel Brobecker <brobecker@gnat.com>
+	    Thiemo Seufer  <seufer@csv.ica.uni-stuttgart.de>
 
-	* elflink.c (elf_section_complain_discarded): Don't complain in
-	.PARISC.unwind.
+	* elfxx-mips.c (_bfd_mips_elf_symbol_processing): Handle
+	SHN_MIPS_TEXT and SHN_MIPS_DATA.
 
-2004-07-10  James E Wilson  <wilson@specifixinc.com>
-
-	* elfxx-ia64.c (elfNN_ia64_relax_ldxmov): Remove abfd parameter.
-	(elfNN_ia64_install_value, elfNN_ia64_relax_brl): Likewise.
-	(elfNN_ia64_relax_section, elfNN_ia64_relocate_section,
-	elfNN_ia64_finish_dynamic_symbol, elfNN_ia64_finish_dynamic_sections):
-	Fix callers.
-	(elfNN_ia64_relax_brl): Change bfd_get_64 to bfd_getl64.  Change
-	bfd_put_64 to bfd_putl64.
-	(elfNN_ia64_relax_ldxmov, elfNN_ia64_install_value): Likewise.
-	
 2004-07-09  H.J. Lu  <hongjiu.lu@intel.com>
 
 	PR 240
