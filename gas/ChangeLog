@@ -1,7 +1,6 @@
-2006-04-16  Mark Mitchell  <mark@codesourcery.com>
+2006-04-16  Daniel Jacobowitz  <dan@codesourcery.com>
 
-	* doc/as.texinfo: Mention that some .type syntaxes are not
-	supported on all architectures.
+	* po/POTFILES.in: Regenerated.
 
 2006-04-14  Sterling Augustine  <sterling@tensilica.com>
 
