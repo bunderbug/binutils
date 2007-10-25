@@ -53,9 +53,8 @@ extern "C" {
 /* This is a utility macro to handle the situation where the code
    wants to place a constant string into the code, followed by a
    comma and then the length of the string.  Doing this by hand
-   is error prone, so using this macro is safer.  The macro will
-   also safely handle the case where a NULL is passed as the arg.  */
-#define STRING_COMMA_LEN(STR) (STR), ((STR) ? sizeof (STR) - 1 : 0)
+   is error prone, so using this macro is safer.  */
+#define STRING_COMMA_LEN(STR) (STR), (sizeof (STR) - 1)
 /* Unfortunately it is not possible to use the STRING_COMMA_LEN macro
    to create the arguments to another macro, since the preprocessor
    will mis-count the number of arguments to the outer macro (by not
@@ -470,10 +469,6 @@ extern void bfd_hash_table_free
 extern struct bfd_hash_entry *bfd_hash_lookup
   (struct bfd_hash_table *, const char *, bfd_boolean create,
    bfd_boolean copy);
-
-/* Insert an entry in a hash table.  */
-extern struct bfd_hash_entry *bfd_hash_insert
-  (struct bfd_hash_table *, const char *, unsigned long);
 
 /* Replace an entry in a hash table.  */
 extern void bfd_hash_replace
@@ -1776,9 +1771,6 @@ enum bfd_architecture
 #define bfd_mach_mcf_isa_c 26
 #define bfd_mach_mcf_isa_c_mac 27
 #define bfd_mach_mcf_isa_c_emac 28
-#define bfd_mach_mcf_isa_c_nodiv 29
-#define bfd_mach_mcf_isa_c_nodiv_mac 30
-#define bfd_mach_mcf_isa_c_nodiv_emac 31
   bfd_arch_vax,       /* DEC Vax */
   bfd_arch_i960,      /* Intel 960 */
     /* The order of the following is important.
@@ -4148,9 +4140,6 @@ This is the 5 bits of a value.  */
   BFD_RELOC_CR16_DISP20,
   BFD_RELOC_CR16_DISP24,
   BFD_RELOC_CR16_DISP24a,
-  BFD_RELOC_CR16_SWITCH8,
-  BFD_RELOC_CR16_SWITCH16,
-  BFD_RELOC_CR16_SWITCH32,
 
 /* NS CRX Relocations.  */
   BFD_RELOC_CRX_REL4,
