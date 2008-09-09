@@ -1,6 +1,6 @@
-2008-09-08  Tristan Gingold  <gingold@adacore.com>
+2008-09-09  Alan Modra  <amodra@bigpond.net.au>
 
-	* BRANCHES: Add 2.18 and 2.19 release branches.
+	* po/binutils.pot: Regenerate.
 
 2008-09-08  Tristan Gingold  <gingold@adacore.com>
 
