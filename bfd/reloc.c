@@ -1,6 +1,6 @@
 /* BFD support for handling relocation entries.
    Copyright 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
-   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008
+   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007
    Free Software Foundation, Inc.
    Written by Cygnus Support.
 
@@ -1734,36 +1734,6 @@ ENUMX
   BFD_RELOC_68K_JMP_SLOT
 ENUMX
   BFD_RELOC_68K_RELATIVE
-ENUMX
-  BFD_RELOC_68K_TLS_GD32
-ENUMX
-  BFD_RELOC_68K_TLS_GD16
-ENUMX
-  BFD_RELOC_68K_TLS_GD8
-ENUMX
-  BFD_RELOC_68K_TLS_LDM32
-ENUMX
-  BFD_RELOC_68K_TLS_LDM16
-ENUMX
-  BFD_RELOC_68K_TLS_LDM8
-ENUMX
-  BFD_RELOC_68K_TLS_LDO32
-ENUMX
-  BFD_RELOC_68K_TLS_LDO16
-ENUMX
-  BFD_RELOC_68K_TLS_LDO8
-ENUMX
-  BFD_RELOC_68K_TLS_IE32
-ENUMX
-  BFD_RELOC_68K_TLS_IE16
-ENUMX
-  BFD_RELOC_68K_TLS_IE8
-ENUMX
-  BFD_RELOC_68K_TLS_LE32
-ENUMX
-  BFD_RELOC_68K_TLS_LE16
-ENUMX
-  BFD_RELOC_68K_TLS_LE8
 ENUMDOC
   Relocations used by 68K ELF.
 
@@ -1860,16 +1830,6 @@ ENUMX
   BFD_RELOC_SPARC_UA32
 ENUMX
   BFD_RELOC_SPARC_UA64
-ENUMX
-  BFD_RELOC_SPARC_GOTDATA_HIX22
-ENUMX
-  BFD_RELOC_SPARC_GOTDATA_LOX10
-ENUMX
-  BFD_RELOC_SPARC_GOTDATA_OP_HIX22
-ENUMX
-  BFD_RELOC_SPARC_GOTDATA_OP_LOX10
-ENUMX
-  BFD_RELOC_SPARC_GOTDATA_OP
 ENUMDOC
   SPARC ELF relocations.  There is probably some overlap with other
   relocation types already defined.
@@ -2110,30 +2070,6 @@ ENUMDOC
   STO_ALPHA_STD_GPLOAD.
 
 ENUM
-  BFD_RELOC_ALPHA_NOP
-ENUMDOC
-  The NOP relocation outputs a NOP if the longword displacement
-     between two procedure entry points is < 2^21.
-
-ENUM
-  BFD_RELOC_ALPHA_BSR
-ENUMDOC
-  The BSR relocation outputs a BSR if the longword displacement
-     between two procedure entry points is < 2^21.
-
-ENUM
-  BFD_RELOC_ALPHA_LDA
-ENUMDOC
-  The LDA relocation outputs a LDA if the longword displacement
-     between two procedure entry points is < 2^16.
-
-ENUM
-  BFD_RELOC_ALPHA_BOH
-ENUMDOC
-  The BOH relocation outputs a BSR if the longword displacement
-     between two procedure entry points is < 2^21, or else a hint.
-
-ENUM
   BFD_RELOC_ALPHA_TLSGD
 ENUMX
   BFD_RELOC_ALPHA_TLSLDM
@@ -2207,13 +2143,6 @@ ENUM
 ENUMDOC
   Low 16 bits of pc-relative value
 
-ENUM
-  BFD_RELOC_MIPS16_GOT16
-ENUMX
-  BFD_RELOC_MIPS16_CALL16
-ENUMDOC
-  Equivalent of BFD_RELOC_MIPS_*, but with the MIPS16 layout of
-     16-bit immediate fields
 ENUM
   BFD_RELOC_MIPS16_HI16
 ENUMDOC
@@ -2312,7 +2241,7 @@ ENUM
 ENUMX
   BFD_RELOC_MIPS_JUMP_SLOT
 ENUMDOC
-  MIPS ELF relocations (VxWorks and PLT extensions).
+  MIPS ELF relocations (VxWorks extensions).
 COMMENT
 
 ENUM
@@ -2710,10 +2639,6 @@ ENUMDOC
 
 ENUM
   BFD_RELOC_PPC_TLS
-ENUMX
-  BFD_RELOC_PPC_TLSGD
-ENUMX
-  BFD_RELOC_PPC_TLSLD
 ENUMX
   BFD_RELOC_PPC_DTPMOD
 ENUMX
@@ -3254,6 +3179,137 @@ ENUMDOC
   ARC 26 bit absolute branch.  The lowest two bits must be zero and are not
   stored in the instruction.  The high 24 bits are installed in bits 23
   through 0.
+ENUM
+  BFD_RELOC_ARC_S21H_PCREL
+ENUMDOC
+  ARCompact 21 bit pc-relative branch.  The lowest bit must be zero and is
+  not stored in the instruction.  The remaining 20 bits are installed in 
+  2 groups of 10 bits each.  The high 10 bits are installed in bits 26 
+  through 17 and the remaining 10 bits in bits 15 through 6.
+ENUM
+  BFD_RELOC_ARC_S21W_PCREL
+ENUMDOC
+  ARCompact 21 bit pc-relative branch. The lowest two bits must be zero and 
+  are not stored in the instruction.  The remaining 19 bits are installed in
+  2 groups of 9 and 10 bits each.  The high 9 bits are installed in bits 26
+  through 18 and the remaining 10 bits in bits 15 through 6.
+ENUM
+  BFD_RELOC_ARC_S25H_PCREL
+ENUMDOC
+  ARCompact 25 bit pc-relative branch. The lowest bit must be zero and is
+  not stored in the instruction.  The remaining 24 bits are installed in 
+  3 groups of 10 bits, 10 bits and 4 bits each.  The high 10 bits are
+  installed in bits 26 through 17, next 10 bits in bits 15 through 6 and the 
+  remaining 4 bits in bits 3 through 0.
+ENUM
+  BFD_RELOC_ARC_S25W_PCREL
+ENUMDOC
+  ARCompact 25 bit pc-relative branch. The lowest two bits must be zero and
+  are not stored in the instruction.  The remaining 23 bits are installed in
+  3 groups of 10 bits, 9 bits and 4 bits each.  The high 9 bits are installed
+  in bits 26 through 18, next 10 bits in bits 15 through 6 and the
+  remaining 4 bits in bits 3 through 0.
+ENUM
+  BFD_RELOC_ARC_S13_PCREL
+ENUMDOC
+  ARCompact 13 bit pc-relative branch. The lowest 2 bits must be zero and
+  are not stored in the the instruction.  The upper 11 bits are installed
+  in bits 10 through 0.
+ENUM
+  BFD_RELOC_ARC_32_ME
+ENUMDOC
+  ARCompact Middle-endian 32 bit word relocation
+ENUM
+  BFD_RELOC_ARC_PC32 
+ENUMDOC
+  ARCompact PC Relative 32 bit relocation.
+ENUM 
+  BFD_RELOC_ARC_GOTPC32
+ENUMDOC
+  ARC 700 GOT specific relocation. This computes the distance from the current 
+pcl to the symbol's global offset table entry. 
+ENUM
+  BFD_RELOC_ARC_PLT32 
+ENUMDOC 
+  ARC 700 PLT specific relocation. This computes the distance from the base 
+of the PLT to the symbols PLT entry. 
+ENUM
+  BFD_RELOC_ARC_COPY
+ENUMDOC
+  ARC 700 Copy relocation. This refers to a location in the writable segment 
+and during execution the dynamic linker copies data associated with the shared
+objects symbol to the location specified by the offset. Created for 
+dynamic linking by the linker . 
+ENUM 
+BFD_RELOC_ARC_GLOB_DAT
+ENUMDOC
+  ARC 700 Global Data relocaton.This is to set a GOT entry to the address
+of the specified symbol . This allows one to determine the correspondence
+between symbols and GOT entries. 
+ENUM
+BFD_RELOC_ARC_JMP_SLOT
+ENUMDOC 
+  This gives the location of a PLT entrys GOT entry. The dynamic linker 
+modifies the GOT entry so that the PLT will transfer control to the designated
+symbols address. Created by the linker. 
+ENUM
+BFD_RELOC_ARC_RELATIVE
+ENUMDOC
+ This gives the location of a value representing a relative address. 
+The dynamic linker adds the load address of the shared library to 
+the relative address to compute the final address. 
+ENUM
+BFD_RELOC_ARC_GOTOFF
+ENUMDOC
+This gives the difference between a symbols value and the address of the 
+Global Offset Table This causes the linker to build the GOT. 
+ENUM
+BFD_RELOC_ARC_GOTPC
+ENUMDOC
+This gives the difference between the address of the GOT base and the 
+current PC. The symbol referenced is _GLOBAL_OFFSET_TABLE .
+ENUM
+BFD_RELOC_ARC_GOT32
+ENUMDOC
+ARC 700 GOT specific relocation. This computes the distance from the base
+of the GOT to the symbol's global offset table entry.
+ENUM
+BFD_RELOC_ARC_SDA
+ENUMDOC
+small data reloc 1
+ENUM
+BFD_RELOC_ARC_SDA32
+ENUMDOC
+small data reloc 2
+ENUM
+BFD_RELOC_ARC_SDA_LDST
+ENUMDOC
+small data reloc 3
+ENUM
+BFD_RELOC_ARC_SDA_LDST1
+ENUMDOC
+small data reloc 4
+ENUM
+BFD_RELOC_ARC_SDA_LDST2
+ENUMDOC
+small data reloc 5
+ENUM
+BFD_RELOC_ARC_SDA16_LD
+ENUMDOC
+small data reloc 6
+ENUM
+BFD_RELOC_ARC_SDA16_LD1
+ENUMDOC
+small data reloc 7
+ENUM
+BFD_RELOC_ARC_SDA16_LD2
+ENUMDOC
+small data reloc 8
+ENUM
+BFD_RELOC_ARC_SDA32_ME
+ENUMDOC
+small data reloc 9
+COMMENT
 
 ENUM
   BFD_RELOC_BFIN_16_IMM
@@ -4199,9 +4255,12 @@ ENUMDOC
   Long displacement extension.
 
 ENUM
-  BFD_RELOC_SCORE_GPREL15
+  BFD_RELOC_SCORE_DUMMY1
 ENUMDOC
   Score relocations
+ENUM
+  BFD_RELOC_SCORE_GPREL15
+ENUMDOC
   Low 16 bit for load/store  
 ENUM
   BFD_RELOC_SCORE_DUMMY2
@@ -4214,14 +4273,6 @@ ENUM
 ENUMDOC
   This is a 19-bit reloc with the right 1 bit assumed to be 0
 ENUM
-  BFD_RELOC_SCORE_IMM30
-ENUMDOC
-  This is a 32-bit reloc for 48-bit instructions.
-ENUM
-  BFD_RELOC_SCORE_IMM32
-ENUMDOC
-  This is a 32-bit reloc for 48-bit instructions.
-ENUM
   BFD_RELOC_SCORE16_JMP
 ENUMDOC
   This is a 11-bit reloc with the right 1 bit assumed to be 0
@@ -4229,10 +4280,6 @@ ENUM
   BFD_RELOC_SCORE16_BRANCH
 ENUMDOC
   This is a 8-bit reloc with the right 1 bit assumed to be 0
-ENUM
-  BFD_RELOC_SCORE_BCMP
-ENUMDOC
-   This is a 9-bit reloc with the right 1 bit assumed to be 0
 ENUM
   BFD_RELOC_SCORE_GOT15
 ENUMX
@@ -4677,12 +4724,6 @@ ENUMX
   BFD_RELOC_CR16_SWITCH16
 ENUMX
   BFD_RELOC_CR16_SWITCH32
-ENUMX
-  BFD_RELOC_CR16_GOT_REGREL20
-ENUMX
-  BFD_RELOC_CR16_GOTC_REGREL20
-ENUMX
-  BFD_RELOC_CR16_GLOB_DAT
 ENUMDOC
   NS CR16 Relocations.
 
@@ -4790,33 +4831,6 @@ ENUM
   BFD_RELOC_CRIS_32_PLT_PCREL
 ENUMDOC
   32-bit offset to symbol with PLT entry, relative to this relocation.
-
-ENUM
-  BFD_RELOC_CRIS_32_GOT_GD
-ENUMX
-  BFD_RELOC_CRIS_16_GOT_GD
-ENUMX
-  BFD_RELOC_CRIS_32_GD
-ENUMX
-  BFD_RELOC_CRIS_DTP
-ENUMX
-  BFD_RELOC_CRIS_32_DTPREL
-ENUMX
-  BFD_RELOC_CRIS_16_DTPREL
-ENUMX
-  BFD_RELOC_CRIS_32_GOT_TPREL
-ENUMX
-  BFD_RELOC_CRIS_16_GOT_TPREL
-ENUMX
-  BFD_RELOC_CRIS_32_TPREL
-ENUMX
-  BFD_RELOC_CRIS_16_TPREL
-ENUMX
-  BFD_RELOC_CRIS_DTPMOD
-ENUMX
-  BFD_RELOC_CRIS_32_IE
-ENUMDOC
-  Relocs used in TLS code for CRIS.
 
 ENUM
   BFD_RELOC_860_COPY
@@ -5115,22 +5129,6 @@ ENUMDOC
   assembler-expanded instructions.  This is commonly used
   internally by the linker after analysis of a
   BFD_RELOC_XTENSA_ASM_EXPAND.
-ENUM
-  BFD_RELOC_XTENSA_TLSDESC_FN
-ENUMX
-  BFD_RELOC_XTENSA_TLSDESC_ARG
-ENUMX
-  BFD_RELOC_XTENSA_TLS_DTPOFF
-ENUMX
-  BFD_RELOC_XTENSA_TLS_TPOFF
-ENUMX
-  BFD_RELOC_XTENSA_TLS_FUNC
-ENUMX
-  BFD_RELOC_XTENSA_TLS_ARG
-ENUMX
-  BFD_RELOC_XTENSA_TLS_CALL
-ENUMDOC
-  Xtensa TLS relocations.
 
 ENUM
   BFD_RELOC_Z80_DISP8
@@ -5150,27 +5148,6 @@ ENUM
 ENUMDOC
   4 bit value.
 
-ENUM
-   BFD_RELOC_LM32_CALL
-ENUMX
-   BFD_RELOC_LM32_BRANCH
-ENUMX
-   BFD_RELOC_LM32_16_GOT
-ENUMX
-   BFD_RELOC_LM32_GOTOFF_HI16
-ENUMX
-   BFD_RELOC_LM32_GOTOFF_LO16
-ENUMX
-   BFD_RELOC_LM32_COPY
-ENUMX
-   BFD_RELOC_LM32_GLOB_DAT
-ENUMX
-   BFD_RELOC_LM32_JMP_SLOT
-ENUMX
-   BFD_RELOC_LM32_RELATIVE
-ENUMDOC
- Lattice Mico32 relocations.
-   
 ENDSENUM
   BFD_RELOC_UNUSED
 CODE_FRAGMENT

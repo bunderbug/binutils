@@ -1,381 +1,365 @@
-2009-03-06  Nick Clifton  <nickc@redhat.com>
+2009-03-09  J"orn Rennecke  <joern.rennecke@arc.com>
 
-	* po/es.po: Updated Spanish translation.
+	* arc-ext.c (arcExtMap_add): Fix pointer basetype signedness problem.
 
-2009-03-04  Alan Modra  <amodra@bigpond.net.au>
+	* cgen-dis.c (hash_insn_array): Supply big_p parameter to cd->dis_hash.
+	(hash_insn_list, cgen_dis_lookup_insn): Likewise.
 
-	PR 6768
-	* configure.in: Test for ld --as-needed support.  Link shared
-	libopcodes against libm.
+	* configure.in (bfd_arc_arch): Use cgen.
 	* configure: Regenerate.
-
-2009-03-03  Peter Bergner  <bergner@vnet.ibm.com>
-
-	* ppc-opc.c (powerpc_opcodes): Reorder the opcode table so that
-	instructions from newer processors are listed before older ones.
-
-2009-03-03  Alan Modra  <amodra@bigpond.net.au>
-
-	* Makefile.am: Run "make dep-am".
-	(HFILES): Move lm32-desc.h and lm32-opc.h from..
-	(CFILES): ..here.
+	* arc-dis.c, arc-opc.c, arc-opc.h, arc-opinst.c: Generate.
+	* Makefile.am (HFILES, CFILES): Use cgen files.
+	(CLEANFILES): Add stamp-arc.
+	(CGEN_CPUS): Add arc.
+	(ARC_DEPS, stamp-arc): New.
+	(arc rules): Use rules for cgen build.
 	* Makefile.in: Regenerate.
+	* arc-desc.c, arc-ibld.c, arc-asm.c: Generate.
 
-2009-03-02  Qinwei  <qinwei@sunnorth.com.cn>
+2008-02-23  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* score7-dis.c: New file.
-	* Makefile.am: Add dependencies for score7-dis.c.
-	* Makefile.in: Regenerate.
-	* configure.in: Add score7-dis to score files.
-	* configure: Regenerate.
-	* score-dis.c: Add support for score7 architecture.
-	* score-opc.h: Likewise.
-
-2009-03-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
-
-	* configure: Regenerate.
-
-2009-02-27  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* i386-dis.c (OP_EX): Call OP_E_memory instead of OP_E.
-
-2009-02-26  Peter Bergner  <bergner@vnet.ibm.com>
-
-	* ppc-dis.c (powerpc_init_dialect): Extend -Mpower7 to disassemble
-	the power7 and the isel instructions.
-	* ppc-opc.c (insert_xc6, extract_xc6): New static functions.
-	(insert_dm, extract_dm): Likewise.
-	(XB6): Update comment to include XX2 form.
-	(WC, XC6, SHW, DMEX, UIM, XX2, XX3RC, XX4, XX2_MASK, XX2UIM_MASK,
-	XX2BF_MASK, XX3BF_MASK, XX3SHW_MASK, XX4_MASK, XWC_MASK, POWER7): New.
-	(RemoveXX3DM): Delete.
-	(powerpc_opcodes): <"lfdp", "lfdpx", "mcrxr", "mftb", "mffgpr",
-	"mftgpr">: Deprecate for POWER7.
-	<"fres", "fres.", "frsqrtes", "frsqrtes.", "fre", "fre.", "frsqrte",
-	"frsqrte.">: Deprecate the three operand form and enable the two
-	operand form for POWER7 and later.
-	<"wait">: Extend to accept optional parameter.  Enable for POWER7.
-	<"waitsrv", "waitimpl">: Add extended opcodes.
-	<"ldbrx", "stdbrx">: Enable for POWER7.
-	<"cdtbcd", "cbcdtd", "addg6s">: Add POWER6 opcodes.
-	<"bpermd", "dcbtstt", "dcbtt", "dcffix.", "dcffix", "divde.", "divde",
-	"divdeo.", "divdeo", "divdeu.", "divdeu", "divdeuo.", "divdeuo",
-	"divwe.", "divwe", "divweo.", "divweo", "divweu.", "divweu", "divweuo.",
-	"divweuo", "fcfids.", "fcfids", "fcfidu.", "fcfidu", "fcfidus.",
-	"fcfidus", "fctidu.", "fctidu", "fctiduz.", "fctiduz", "fctiwu.",
-	"fctiwu", "fctiwuz.", "fctiwuz", "ftdiv", "ftsqrt", "lbarx", "lfiwzx",
-	"lharx", "popcntd", "popcntw", "stbcx.", "sthcx.">: Add POWER7 opcodes.
-	<"lxsdux", "lxsdx", "lxvdsx", "lxvw4ux", "lxvw4x", "stxsdux", "stxsdx",
-	"stxvw4ux", "stxvw4x", "xsabsdp", "xsadddp", "xscmpodp", "xscmpudp",
-	"xscpsgndp", "xscvdpsp", "xscvdpsxds", "xscvdpsxws", "xscvdpuxds",
-	"xscvdpuxws", "xscvspdp", "xscvsxddp", "xscvuxddp", "xsdivdp",
-	"xsmaddadp", "xsmaddmdp", "xsmaxdp", "xsmindp", "xsmsubadp",
-	"xsmsubmdp", "xsmuldp", "xsnabsdp", "xsnegdp", "xsnmaddadp",
-	"xsnmaddmdp", "xsnmsubadp", "xsnmsubmdp", "xsrdpi", "xsrdpic",
-	"xsrdpim", "xsrdpip", "xsrdpiz", "xsredp", "xsrsqrtedp", "xssqrtdp",
-	"xssubdp", "xstdivdp", "xstsqrtdp", "xvabsdp", "xvabssp", "xvadddp",
-	"xvaddsp", "xvcmpeqdp.", "xvcmpeqdp", "xvcmpeqsp.", "xvcmpeqsp",
-	"xvcmpgedp.", "xvcmpgedp", "xvcmpgesp.", "xvcmpgesp", "xvcmpgtdp.",
-	"xvcmpgtdp", "xvcmpgtsp.", "xvcmpgtsp", "xvcpsgnsp", "xvcvdpsp",
-	"xvcvdpsxds", "xvcvdpsxws", "xvcvdpuxds", "xvcvdpuxws", "xvcvspdp",
-	"xvcvspsxds", "xvcvspsxws", "xvcvspuxds", "xvcvspuxws", "xvcvsxddp",
-	"xvcvsxdsp", "xvcvsxwdp", "xvcvsxwsp", "xvcvuxddp", "xvcvuxdsp",
-	"xvcvuxwdp", "xvcvuxwsp", "xvdivdp", "xvdivsp", "xvmaddadp",
-	"xvmaddasp", "xvmaddmdp", "xvmaddmsp", "xvmaxdp", "xvmaxsp",
-	"xvmindp", "xvminsp", "xvmovsp", "xvmsubadp", "xvmsubasp", "xvmsubmdp",
-	"xvmsubmsp", "xvmuldp", "xvmulsp", "xvnabsdp", "xvnabssp", "xvnegdp",
-	"xvnegsp", "xvnmaddadp", "xvnmaddasp", "xvnmaddmdp", "xvnmaddmsp",
-	"xvnmsubadp", "xvnmsubasp", "xvnmsubmdp", "xvnmsubmsp", "xvrdpi",
-	"xvrdpic", "xvrdpim", "xvrdpip", "xvrdpiz", "xvredp", "xvresp",
-	"xvrspi", "xvrspic", "xvrspim", "xvrspip", "xvrspiz", "xvrsqrtedp",
-	"xvrsqrtesp", "xvsqrtdp", "xvsqrtsp", "xvsubdp", "xvsubsp", "xvtdivdp",
-	"xvtdivsp", "xvtsqrtdp", "xvtsqrtsp", "xxland", "xxlandc", "xxlnor",
-	"xxlor", "xxlxor", "xxmrghw", "xxmrglw", "xxsel", "xxsldwi", "xxspltd",
-	"xxspltw", "xxswapd">: Add VSX opcodes.
-
-2009-02-23  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* i386-gen.c (operand_type_init): Remove OPERAND_TYPE_VEX_IMM4.
-	(operand_types): Remove Vex_Imm4.
-
-	* i386-opc.h (Vex_Imm4): Removed.
-	(OTMax): Updated.
-	(i386_operand_type): Remove vex_imm4.
-
-	* i386-opc.tbl: Remove Vex_Imm4 comments.
-	* i386-init.h: Regenerated.
-	* i386-tbl.h: Likewise.
-
-2009-02-23  Richard Earnshaw  <rearnsha@arm.com>
-
-	* arm-dis.c (neon_opcodes): Correct bit-mask and patterns for
-	vq{r}shr{u}n.s64 insnstructions.
-
-2009-02-19  Peter Bergner  <bergner@vnet.ibm.com>
-
-	* ppc-opc.c (powerpc_opcodes) <"lfdepx", "stfdepx">: Fix the first
-	operand to be a float point register (FRT/FRS).
-
-2009-02-18  Adam Nemet  <anemet@caviumnetworks.com>
-
-	* mips-opc.c (mips_builtin_opcodes): Move the Octeon-specific
-	dmfc2 and dmtc2 before the architecture-level variants.
-
-2009-02-18  Pierre Muller  <muller@ics.u-strasbg.fr>
-
-	* fr30-opc.c: Regenerate.
-	* frv-opc.c: Regenerate.
-	* ip2k-opc.c: Regenerate.
-	* iq2000-opc.c: Regenerate.
-	* lm32-opc.c: Regenerate.
-	* m32c-opc.c: Regenerate.
-	* m32r-opc.c: Regenerate.
-	* mep-opc.c: Regenerate.
-	* mt-opc.c: Regenerate.
-	* xc16x-opc.c: Regenerate.
-	* xstormy16-opc.c: Regenerate.
-	* tic54x-dis.c (print_instruction): Avoid compiler warning on
-	sprintf call.
-
-2009-02-12  Nathan Sidwell  <nathan@codesourcery.com>
-
-	* m68k-opc.c (m68k_opcodes): Add stldsr instruction.
-
-2009-02-05  Peter Bergner  <bergner@vnet.ibm.com>
-
-	* ppc-opc.c: Update copyright year.
-	(powerpc_opcodes) <"dcbt", "dcbtst">: Deprecate the Embedded operand
-	ordering for POWER4 and later and use the correct Server ordering.
-
-2009-02-04  H.J. Lu  <hongjiu.lu@intel.com>
-
-	AVX Programming Reference (January, 2009)
-	* i386-dis.c (PREFIX_VEX_3A44): New.
-	(VEX_LEN_3A44_P_2): Likewise.
-	(PREFIX_VEX_3A48): Updated.
-	(VEX_LEN_3A4C_P_2): Likewise.
-	(prefix_table): Add PREFIX_VEX_3A44.
-	(vex_table): Likewise.
-	(vex_len_table): Add VEX_LEN_3A44_P_2.
-
-	* i386-opc.tbl: Add PCLMUL + AVX instructions.
+	* i386-opc.tbl: Disallow 16-bit near indirect branches for
+	x86-64.
 	* i386-tbl.h: Regenerated.
 
-2009-02-03  Sandip Matte  <sandip@rmicorp.com>
+2008-02-21  Jan Beulich  <jbeulich@novell.com>
 
-	* mips-dis.c (mips_cp0_names_xlr, mips_cp0sel_names_xlr): Define.
-	(mips_arch_choices): Add XLR entry.
-	* mips-opc.c (XLR): Define.
-	(mips_builtin_opcodes): Add XLR instructions.
+	* i386-opc.tbl: Allow Dword for far indirect call. Allow Dword
+	and Fword for far indirect jmp. Allow Reg16 and Word for near
+	indirect jmp on x86-64. Disallow Fword for lcall.
+	* i386-tbl.h: Re-generate.
 
-2009-02-03  Carlos O'Donell  <carlos@codesourcery.com>
+2008-02-18  M R Swami Reddy <MR.Swami.Reddy@nsc.com>
 
-	* Makefile.am: Add install-pdf target.
-	* po/Make-in: Add install-pdf target.
-	* Makefile.in: Regenerate.
+	* cr16-opc.c  (cr16_num_optab): Defined
 
-2009-02-02  DJ Delorie  <dj@redhat.com>
+2008-02-16  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* mep-asm.c: Regenerate.
-	* mep-desc.c: Regenerate.
-	* mep-desc.h: Regenerate.
-	* mep-dis.c: Regenerate.
-	* mep-ibld.c: Regenerate.
-	* mep-opc.c: Regenerate.
-	* mep-opc.h: Regenerate.
-
-2009-01-29  Mark Mitchell  <mark@codesourcery.com>
-
-	* arm-dis.c (thumb32_opcodes): Correct decoding for qadd, qdadd,
-	qsub, and qdsub.
-
-2009-01-28  Chao-ying Fu  <fu@mips.com>
-
-        * mips-opc.c (suxc1): Add the flag of FP_D.
-
-2009-01-20  Alan Modra  <amodra@bigpond.net.au>
-
-	* fr30-asm.c, fr30-dis.c, fr30-ibld.c, frv-asm.c, frv-dis.c,
-	* frv-ibld.c, ip2k-asm.c, ip2k-dis.c, ip2k-ibld.c,
-	* iq2000-asm.c, iq2000-dis.c, iq2000-ibld.c, m32c-asm.c,
-	* m32c-dis.c, m32c-ibld.c, m32r-asm.c, m32r-dis.c,
-	* m32r-ibld.c, mep-asm.c, mep-dis.c, mep-ibld.c, mt-asm.c,
-	* mt-dis.c, mt-ibld.c, openrisc-asm.c, openrisc-dis.c,
-	* openrisc-ibld.c, xc16x-asm.c, xc16x-dis.c, xc16x-ibld.c,
-	* xstormy16-asm.c, xstormy16-dis.c, xstormy16-ibld.c: Regenerate.
-
-2009-01-16  Alan Modra  <amodra@bigpond.net.au>
-
-	* configure.in (commonbfdlib): Delete.
-	(SHARED_LIBADD): Add pic libiberty if such is available.
-	* configure: Regenerate.
-	* po/POTFILES.in: Regenerate.
-
-2009-01-14  Peter Bergner  <bergner@vnet.ibm.com>
-
-	* ppc-dis.c (print_insn_powerpc): Skip insn if it is deprecated.
-	* ppc-opc.c (powerpc_opcodes) <mtfsf, mtfsf.>: Deprecate the two
-	operand form and enable the four operand form for POWER6 and later.
-	<mtfsfi, mtfsfi.>: Deprecate the two operand form and enable the
-	three operand form for POWER6 and later.
-
-2009-01-14  Mike Frysinger  <vapier@gentoo.org>
-
-	* bfin-dis.c (OUTS): Use "%s" as format string.
-
-2009-01-13  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* i386-gen.c (cpu_flag_init): Remove a white space.
-	(operand_type_init): Likewise.
-
-2009-01-12  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* i386-opc.tbl: Add NoAVX to movnti, lfence and mfence.
-	* i386-tbl.h: Regenerated.
-
-2009-01-12  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* i386-dis.c (dis386): Use EbS on addB, orB, adcB, sbbB, andB,
-	subB, xorB and cmpB.  Use EvS on addS, orS, adcS, sbbS, andS,
-	subS, xorS and cmpS.
-
-2009-01-10  H.J. Lu  <hongjiu.lu@intel.com>
-
-	* i386-gen.c (cpu_flag_init): Replace CpuP4 and CpuK6 with
-	CpuClflush and CpuSYSCALL, respectively. Remove CpuK8.  Add
-	CPU_COREI7_FLAGS, CPU_CLFLUSH_FLAGS and CPU_SYSCALL_FLAGS.
-	(cpu_flags): Remove CpuP4, CpuK6 and CpuK8.  Add CpuClflush
-	and CpuSYSCALL.
-	(lineno): Removed.
-	(set_bitfield): Take an argument, lineno.  Don't report lineno
-	on error if it is -1.
-	(process_i386_cpu_flag): Take an argument, lineno.
-	(process_i386_opcode_modifier): Likewise.
-	(process_i386_operand_type): Likewise.
-	(output_i386_opcode): Likewise.
-	(opcode_hash_entry): Add lineno.
-	(process_i386_opcodes): Updated.
-	(process_i386_registers): Likewise.
-	(process_i386_initializers): Likewise.
-
-	* i386-opc.h (CpuP4): Removed.
-	(CpuK6): Likewise.
-	(CpuK8): Likewise.
-	(CpuClflush): New.
-	(CpuSYSCALL): Likewise.
-	(CpuMMX): Updated.
-	(i386_cpu_flags): Remove cpup4, cpuk6 and cpuk8.  Add
-	cpuclflush and cpusyscall.
-
-	* i386-opc.tbl: Update movnti, clflush, lfence, mfence, pause,
-	syscall and sysret.
+	* i386-gen.c  (operand_type_init): Add OPERAND_TYPE_INOUTPORTREG.
 	* i386-init.h: Regenerated.
-	* i386-tbl.h: Likewise.
 
-2009-01-09  H.J. Lu  <hongjiu.lu@intel.com>
+2008-02-14  Nick Clifton  <nickc@redhat.com>
 
-	* i386-gen.c (cpu_flag_init): Add CpuRdtscp to CPU_K8_FLAGS
-	and CPU_AMDFAM10_FLAGS.  Add CPU_RDTSCP_FLAGS.
-	(cpu_flags): Add CpuRdtscp.
-	(set_bitfield): Remove CpuSledgehammer check.
+	PR binutils/5524
+	* configure.in (SHARED_LIBADD): Select the correct host specific
+	file extension for shared libraries.
+	* configure: Regenerate.
 
-	* i386-opc.h (CpuRdtscp): New.
+2008-02-13  Jan Beulich  <jbeulich@novell.com>
+
+	* i386-opc.h (RegFlat): New.
+	* i386-reg.tbl (flat): Add.
+	* i386-tbl.h: Re-generate.
+
+2008-02-13  Jan Beulich  <jbeulich@novell.com>
+
+	* i386-dis.c (a_mode): New.
+	(cond_jump_mode): Adjust.
+	(Ma): Change to a_mode.
+	(intel_operand_size): Handle a_mode.
+	* i386-opc.tbl: Allow Dword and Qword for bound.
+	* i386-tbl.h: Re-generate.
+
+2008-02-13  Jan Beulich  <jbeulich@novell.com>
+
+	* i386-gen.c (process_i386_registers): Process new fields.
+	* i386-opc.h (reg_entry): Shrink reg_flags and reg_num to
+	unsigned char. Add dw2_regnum and Dw2Inval.
+	* i386-reg.tbl: Provide initializers for dw2_regnum. Add pseudo
+	register names.
+	* i386-tbl.h: Re-generate.
+
+2008-02-11  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (cpu_flag_init): Add CPU_XSAVE_FLAGS.
+	* i386-init.h: Updated.
+
+2008-02-11  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (cpu_flags): Add CpuXsave.
+
+	* i386-opc.h (CpuXsave): New.
 	(CpuLM): Updated.
-	(i386_cpu_flags): Add cpurdtscp.
+	(i386_cpu_flags): Add cpuxsave.
 
-	* i386-opc.tbl: Replace CpuSledgehammer with CpuRdtscp.
+	* i386-dis.c (MOD_0FAE_REG_4): New.
+	(RM_0F01_REG_2): Likewise.
+	(MOD_0FAE_REG_5): Updated.
+	(RM_0F01_REG_3): Likewise.
+	(reg_table): Use MOD_0FAE_REG_4.
+	(mod_table): Use RM_0F01_REG_2.  Add MOD_0FAE_REG_4.  Updated
+	for xrstor.
+	(rm_table): Add RM_0F01_REG_2.
+
+	* i386-opc.tbl: Add xsave, xrstor, xgetbv and xsetbv.
 	* i386-init.h: Regenerated.
 	* i386-tbl.h: Likewise.
 
-2009-01-09  Peter Bergner  <bergner@vnet.ibm.com>
+2008-02-11  Jan Beulich  <jbeulich@novell.com>
 
-	* ppc-opc.c (PPCNONE): Define.
-	(NOPOWER4): Delete.
-	(powerpc_opcodes): Initialize the new "deprecated" field.
+	* i386-opc.tbl: Remove Disp32S from CpuNo64 opcodes. Remove
+	Disp16 from Cpu64 non-jump opcodes (including loop and j?cxz).
+	* i386-tbl.h: Re-generate.
 
-2009-01-06  H.J. Lu  <hongjiu.lu@intel.com>
+2008-02-04  H.J. Lu  <hongjiu.lu@intel.com>
 
-	AVX Programming Reference (December, 2008)
-	* i386-dis.c (VEX_LEN_2B_M_0): Removed.
-	(VEX_LEN_E7_P_2_M_0): Likewise.
-	(VEX_LEN_2C_P_1): Updated.
-	(VEX_LEN_E8_P_2): Likewise.
-	(vex_len_table): Remove VEX_LEN_2B_M_0 and VEX_LEN_E7_P_2_M_0.
-	(mod_table): Likewise.
+	PR 5715
+	* configure: Regenerated.
 
-	* i386-opc.tbl: Add 256bit vmovntdq, vmovntpd and vmovntps.
+2008-02-04  Adam Nemet  <anemet@caviumnetworks.com>
+
+	* mips-dis.c: Update copyright.
+	(mips_arch_choices): Add Octeon.
+	* mips-opc.c: Update copyright.
+	(IOCT): New macro.
+	(mips_builtin_opcodes): Add Octeon instruction synciobdma.
+
+2008-01-29  Alan Modra  <amodra@bigpond.net.au>
+
+	* ppc-opc.c: Support optional L form mtmsr.
+
+2008-01-24  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-dis.c (OP_E_extended): Handle r12 like rsp.
+
+2008-01-23  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (cpu_flag_init): Add CpuLM to CPU_GENERIC64_FLAGS.
+	* i386-init.h: Regenerated.
+
+2008-01-23  Tristan Gingold  <gingold@adacore.com>
+
+	* ia64-dis.c (print_insn_ia64): Display symbolic name of ar.fcr,
+	ar.eflag, ar.csd, ar.ssd, ar.cflg, ar.fsr, ar.fir and ar.fdr.
+
+2008-01-22  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (cpu_flag_init): Remove CpuMMX2.
+	(cpu_flags): Likewise.
+
+	* i386-opc.h (CpuMMX2): Removed.
+	(CpuSSE): Updated.
+
+	* i386-opc.tbl: Replace CpuMMX2 with CpuSSE|Cpu3dnowA.
+	* i386-init.h: Regenerated.
+	* i386-tbl.h: Likewise.
+
+2008-01-22  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (cpu_flag_init): Add CPU_VMX_FLAGS and
+	CPU_SMX_FLAGS.
+	* i386-init.h: Regenerated.
+
+2008-01-15  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-opc.tbl: Use Qword on movddup.
 	* i386-tbl.h: Regenerated.
 
-2009-01-05  H.J. Lu  <hongjiu.lu@intel.com>
+2008-01-15  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* i386-gen.c (process_copyright): Update for 2009.
+	* i386-opc.tbl: Put back 16bit movsx/movzx for AT&T syntax.
+	* i386-tbl.h: Regenerated.
+
+2008-01-15  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-dis.c (Mx): New.
+	(PREFIX_0FC3): Likewise.
+	(PREFIX_0FC7_REG_6): Updated.
+	(dis386_twobyte): Use PREFIX_0FC3.
+	(prefix_table): Add PREFIX_0FC3.  Use Mq on movntq and movntsd.
+	Use Mx on movntps, movntpd, movntdq and movntdqa.  Use Md on
+	movntss.
+
+2008-01-14  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (opcode_modifiers): Add IntelSyntax.
+	(operand_types): Add Mem.
+
+	* i386-opc.h (IntelSyntax): New.
+	* i386-opc.h (Mem): New.
+	(Byte): Updated.
+	(Opcode_Modifier_Max): Updated.
+	(i386_opcode_modifier): Add intelsyntax.
+	(i386_operand_type): Add mem.
+
+	* i386-opc.tbl: Remove Reg16 from movnti.  Add sizes to more
+	instructions.
+
+	* i386-reg.tbl: Add size for accumulator.
 
 	* i386-init.h: Regenerated.
 	* i386-tbl.h: Likewise.
 
-2009-01-05  H.J. Lu  <hongjiu.lu@intel.com>
+2008-01-13  H.J. Lu  <hongjiu.lu@intel.com>
 
-	AVX Programming Reference (December, 2008)
-	* i386-dis.c (OP_VEX_FMA): Removed.
-	(OP_EX_VexW): Likewise.
-	(OP_EX_VexImmW): Likewise.
-	(OP_XMM_VexW): Likewise.
-	(VEXI4_Fixup): Likewise.
-	(VPERMIL2_Fixup): Likewise.
-	(VexI4): Likewise.
-	(VexFMA): Likewise.
-	(Vex128FMA): Likewise.
-	(EXVexW): Likewise.
-	(EXdVexW): Likewise.
-	(EXqVexW): Likewise.
-	(EXVexImmW): Likewise.
-	(XMVexW): Likewise.
-	(VPERMIL2): Likewise.
-	(PREFIX_VEX_3A48...PREFIX_VEX_3A4A): Likewise.
-	(PREFIX_VEX_3A5C...PREFIX_VEX_3A5F): Likewise.
-	(PREFIX_VEX_3A68...PREFIX_VEX_3A6F): Likewise.
-	(PREFIX_VEX_3A78...PREFIX_VEX_3A7F): Likewise.
-	(VEX_LEN_3A6A_P_2...VEX_LEN_3A6F_P_2): Likewise.
-	(VEX_LEN_3A7A_P_2...VEX_LEN_3A7F_P_2): Likewise.
-	(get_vex_imm8): Likewise.
-	(OP_EX_VexReg): Likewise.
-	vpermil2_op): Likewise.
-	(EXVexWdq): New.
-	(vex_w_dq_mode): Likewise.
-	(PREFIX_VEX_3896...PREFIX_VEX_389F): Likewise.
-	(PREFIX_VEX_38A6...PREFIX_VEX_38AF): Likewise.
-	(PREFIX_VEX_38B6...PREFIX_VEX_38BF): Likewise.
-	(es_reg): Updated.
-	(PREFIX_VEX_38DB): Likewise.
-	(PREFIX_VEX_3A4A): Likewise.
-	(PREFIX_VEX_3A60): Likewise.
-	(PREFIX_VEX_3ADF): Likewise.
-	(VEX_LEN_3ADF_P_2): Likewise.
-	(prefix_table): Remove PREFIX_VEX_3A48...PREFIX_VEX_3A4A,
-	PREFIX_VEX_3A5C...PREFIX_VEX_3A5F, 
-	PREFIX_VEX_3A68...PREFIX_VEX_3A6F and
-	PREFIX_VEX_3A78...PREFIX_VEX_3A7F.  Add
-	PREFIX_VEX_3896...PREFIX_VEX_389F,
-	PREFIX_VEX_38A6...PREFIX_VEX_38AF and
-	PREFIX_VEX_38B6...PREFIX_VEX_38BF.
-	(vex_table): Likewise.
-	(vex_len_table): Remove VEX_LEN_3A6A_P_2...VEX_LEN_3A6F_P_2
-	and VEX_LEN_3A7A_P_2...VEX_LEN_3A7F_P_2.
-	(putop): Support "%XW".
-	(intel_operand_size): Handle vex_w_dq_mode.
+	* i386-opc.h (Byte): Fix a typo.
 
-	* i386-opc.h (VexNDS): Add a comment for VEX NDS and VEX DDS.
+2008-01-12  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* i386-opc.tbl: Remove vpermil2pd/vpermil2ps and old FMA
-	instructions.  Add new FMA instructions.
+	PR gas/5534
+	* i386-gen.c (operand_type_init): Add Dword to
+	OPERAND_TYPE_ACC32.  Add Qword to OPERAND_TYPE_ACC64.
+	(opcode_modifiers): Remove CheckSize, Byte, Word, Dword,
+	Qword and Xmmword.
+	(operand_types): Add Byte, Word, Dword, Fword, Qword, Tbyte,
+	Xmmword, Unspecified and Anysize.
+	(set_bitfield): Make Mmword an alias of Qword.  Make Oword
+	an alias of Xmmword.
+
+	* i386-opc.h (CheckSize): Removed.
+	(Byte): Updated.
+	(Word): Likewise.
+	(Dword): Likewise.
+	(Qword): Likewise.
+	(Xmmword): Likewise.
+	(FWait): Updated.
+	(OTMax): Likewise.
+	(i386_opcode_modifier): Remove checksize, byte, word, dword,
+	qword and xmmword.
+	(Fword): New.
+	(TBYTE): Likewise.
+	(Unspecified): Likewise.
+	(Anysize): Likewise.
+	(i386_operand_type): Add byte, word, dword, fword, qword,
+	tbyte xmmword, unspecified and anysize.
+
+	* i386-opc.tbl: Updated to use Byte, Word, Dword, Fword, Qword,
+	Tbyte, Xmmword, Unspecified and Anysize.
+
+	* i386-reg.tbl: Add size for accumulator.
+
+	* i386-init.h: Regenerated.
+	* i386-tbl.h: Likewise.
+
+2008-01-10  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-dis.c (REG_0F0E): Renamed to REG_0F0D.
+	(REG_0F18): Updated.
+	(reg_table): Updated.
+	(dis386_twobyte): Updated.  Use "nopQ" on 0x19 to 0x1e.
+	(twobyte_has_modrm): Set 1 for 0x19 to 0x1e.
+
+2008-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (set_bitfield): Use fail () on error.
+
+2008-01-08  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (lineno): New.
+	(filename): Likewise.
+	(set_bitfield): Report filename and line numer on error.
+	(process_i386_opcodes): Set filename and update lineno.
+	(process_i386_registers): Likewise.
+
+2008-01-05  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (opcode_modifiers): Rename IntelMnemonic to
+	ATTSyntax.
+
+	* i386-opc.h (IntelMnemonic): Renamed to ..
+	(ATTSyntax): This
+	(Opcode_Modifier_Max): Updated.
+	(i386_opcode_modifier): Remove intelmnemonic. Add attsyntax
+	and intelsyntax.
+
+	* i386-opc.tbl: Remove IntelMnemonic and update with ATTSyntax 
+	on fsub, fubp, fsubr, fsubrp, div, fdivp, fdivr and fdivrp.
 	* i386-tbl.h: Regenerated.
 
-2009-01-02  Matthias Klose  <doko@ubuntu.com> 
+2008-01-04  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* or32-opc.c (or32_print_register, or32_print_immediate, 
-	disassemble_insn): Don't rely on undefined sprintf behaviour. 
+	* i386-gen.c: Update copyright to 2008.
+	* i386-opc.h: Likewise.
+	* i386-opc.tbl: Likewise.
 
-For older changes see ChangeLog-2008
+	* i386-init.h: Regenerated.
+	* i386-tbl.h: Likewise.
+
+2008-01-04  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-opc.tbl: Add NoRex64 to extractps, movmskpd, movmskps,
+	pextrb, pextrw, pinsrb, pinsrw and pmovmskb.
+	* i386-tbl.h: Regenerated.
+
+2008-01-03  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (cpu_flag_init): Remove CpuSSE4_1_Or_5 and
+	CpuSSE4_2_Or_ABM.
+	(cpu_flags): Likewise.
+
+	* i386-opc.h (CpuSSE4_1_Or_5): Removed.
+	(CpuSSE4_2_Or_ABM): Likewise.
+	(CpuLM): Updated.
+	(i386_cpu_flags): Remove cpusse4_1_or_5 and cpusse4_2_or_abm.
+
+	* i386-opc.tbl: Replace CpuSSE4_1_Or_5, CpuSSE4_2_Or_ABM and
+	Cpu686|CpuPadLock with CpuSSE4_1|CpuSSE5, CpuABM|CpuSSE4_2
+	and CpuPadLock, respectively.
+	* i386-init.h: Regenerated.
+	* i386-tbl.h: Likewise.
+
+2008-01-03  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (opcode_modifiers): Remove No_xSuf.
+
+	* i386-opc.h (No_xSuf): Removed.
+	(CheckSize): Updated.
+
+	* i386-tbl.h: Regenerated.
+
+2008-01-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (cpu_flag_init): Add CpuSSE4_2_Or_ABM to
+	CPU_AMDFAM10_FLAGS, CPU_SSE4_2_FLAGS, CpuABM and
+	CPU_SSE5_FLAGS.
+	(cpu_flags): Add CpuSSE4_2_Or_ABM.
+
+	* i386-opc.h (CpuSSE4_2_Or_ABM): New.
+	(CpuLM): Updated.
+	(i386_cpu_flags): Add cpusse4_2_or_abm.
+
+	* i386-opc.tbl: Use CpuSSE4_2_Or_ABM instead of
+	CpuABM|CpuSSE4_2 on popcnt.
+	* i386-init.h: Regenerated.
+	* i386-tbl.h: Likewise.
+
+2008-01-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-opc.h: Update comments.
+
+2008-01-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	* i386-gen.c (opcode_modifiers): Use Qword instead of QWord.
+	* i386-opc.h: Likewise.
+	* i386-opc.tbl: Likewise.
+
+2008-01-02  H.J. Lu  <hongjiu.lu@intel.com>
+
+	PR gas/5534
+	* i386-gen.c (opcode_modifiers): Add No_xSuf, CheckSize,
+	Byte, Word, Dword, QWord and Xmmword.
+
+	* i386-opc.h (No_xSuf): New.
+	(CheckSize): Likewise.
+	(Byte): Likewise.
+	(Word): Likewise.
+	(Dword): Likewise.
+	(QWord): Likewise.
+	(Xmmword): Likewise.
+	(FWait): Updated.
+	(i386_opcode_modifier): Add No_xSuf, CheckSize, Byte, Word,
+	Dword, QWord and Xmmword.
+
+	* i386-opc.tbl: Add CheckSize|QWord to movq if IgnoreSize is
+	used.
+	* i386-tbl.h: Regenerated.
+
+2008-01-02  Mark Kettenis  <kettenis@gnu.org>
+
+	* m88k-dis.c (instructions): Fix fcvt.* instructions.
+	From Miod Vallat.
+
+For older changes see ChangeLog-2007
 
 Local Variables:
 mode: change-log

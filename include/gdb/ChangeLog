@@ -1,11 +1,7 @@
-2009-01-07  Hans-Peter Nilsson  <hp@axis.com>
+2009-03-09  J"orn Rennecke  <joern.rennecke@arc.com>
 
-	* callback.h (struct host_callback_struct): Mark member error as
-	pointing to a noreturn function.
-
-2008-02-12  M Ranga Swami Reddy <MR.Swami.Reddy@nsc.com>
-
-	* sim-cr16.h: New file.
+	* callback.h (get_path): Declare.
+	* target-io/arc.h: New file.
 
 2008-01-01  Daniel Jacobowitz  <dan@codesourcery.com>
 

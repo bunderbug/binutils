@@ -1,5 +1,5 @@
 /* Remote target system call callback support.
-   Copyright 1997, 2007, 2008, 2009 Free Software Foundation, Inc.
+   Copyright 1997, 2007, 2008 Free Software Foundation, Inc.
    Contributed by Cygnus Solutions.
 
    This file is part of GDB.
@@ -124,11 +124,7 @@ struct host_callback_struct
   /* Print an error message and "exit".
      In the case of gdb "exiting" means doing a longjmp back to the main
      command loop.  */
-  void (*error) PARAMS ((host_callback *, const char *, ...))
-#ifdef __GNUC__
-    __attribute__ ((__noreturn__))
-#endif
-    ;
+  void (*error) PARAMS ((host_callback *, const char *, ...));
 
   int last_errno;		/* host format */
 
@@ -323,6 +319,14 @@ void cb_store_target_endian PARAMS ((host_callback *, char *, int, long));
 int cb_is_stdin PARAMS ((host_callback *, int));
 int cb_is_stdout PARAMS ((host_callback *, int));
 int cb_is_stderr PARAMS ((host_callback *, int));
+
+/* Utility of cb_syscall to fetch a path name.
+   The buffer is malloc'd and the address is stored in BUFP.
+   The result is that of get_string, but prepended with
+   simulator_sysroot if the string starts with '/'.
+   If an error occurs, no buffer is left malloc'd.  */
+#define TADDR unsigned long
+int get_path PARAMS ((host_callback *, CB_SYSCALL *, TADDR, char **));
 
 /* Perform a system call.  */
 CB_RC cb_syscall PARAMS ((host_callback *, CB_SYSCALL *));
