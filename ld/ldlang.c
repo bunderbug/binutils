@@ -1322,8 +1322,13 @@ lang_memory_default (asection * section)
   return lang_memory_region_lookup (DEFAULT_MEMORY_REGION, FALSE);
 }
 
+/* Find or create an output_section_statement with the given NAME.
+   If CONSTRAINT is non-zero match one with that constraint, otherwise
+   match any non-negative constraint.  If CREATE, always make a
+   new output_section_statement for SPECIAL CONSTRAINT.  */
+
 lang_output_section_statement_type *
-lang_output_section_statement_lookup (const char *const name,
+lang_output_section_statement_lookup (const char *name,
 				      int constraint,
 				      bfd_boolean create)
 {
@@ -1344,8 +1349,8 @@ lang_output_section_statement_lookup (const char *const name,
       /* We have a section of this name, but it might not have the correct
 	 constraint.  */
       struct out_section_hash_entry *last_ent;
-      unsigned long hash = entry->root.hash;
 
+      name = entry->s.output_section_statement.name;
       if (create && constraint == SPECIAL)
 	/* Not traversing to the end reverses the order of the second
 	   and subsequent SPECIAL sections in the hash table chain,
@@ -1354,17 +1359,15 @@ lang_output_section_statement_lookup (const char *const name,
       else
 	do
 	  {
-	    if (entry->s.output_section_statement.constraint >= 0
-		&& (constraint == 0
-		    || (constraint
-			== entry->s.output_section_statement.constraint)))
+	    if (constraint == entry->s.output_section_statement.constraint
+		|| (constraint == 0
+		    && entry->s.output_section_statement.constraint >= 0))
 	      return &entry->s.output_section_statement;
 	    last_ent = entry;
 	    entry = (struct out_section_hash_entry *) entry->root.next;
 	  }
 	while (entry != NULL
-	       && entry->root.hash == hash
-	       && strcmp (name, entry->s.output_section_statement.name) == 0);
+	       && name == entry->s.output_section_statement.name);
 
       if (!create)
 	return NULL;
@@ -1385,6 +1388,36 @@ lang_output_section_statement_lookup (const char *const name,
 
   entry->s.output_section_statement.name = name;
   entry->s.output_section_statement.constraint = constraint;
+  return &entry->s.output_section_statement;
+}
+
+/* Find the next output_section_statement with the same name as OS.
+   If CONSTRAINT is non-zero, find one with that constraint otherwise
+   match any non-negative constraint.  */
+
+lang_output_section_statement_type *
+next_matching_output_section_statement (lang_output_section_statement_type *os,
+					int constraint)
+{
+  /* All output_section_statements are actually part of a
+     struct out_section_hash_entry.  */
+  struct out_section_hash_entry *entry = (struct out_section_hash_entry *)
+    ((char *) os
+     - offsetof (struct out_section_hash_entry, s.output_section_statement));
+  const char *name = os->name;
+
+  ASSERT (name == entry->root.string);
+  do
+    {
+      entry = (struct out_section_hash_entry *) entry->root.next;
+      if (entry == NULL
+	  || name != entry->s.output_section_statement.name)
+	return NULL;
+    }
+  while (constraint != entry->s.output_section_statement.constraint
+	 && (constraint != 0
+	     || entry->s.output_section_statement.constraint < 0));
+
   return &entry->s.output_section_statement;
 }
 
@@ -4465,7 +4498,8 @@ lang_check_section_addresses (void)
   for (s = link_info.output_bfd->sections; s != NULL; s = s->next)
     {
       /* Only consider loadable sections with real contents.  */
-      if (IGNORE_SECTION (s) || s->size == 0)
+      if ((s->flags & SEC_NEVER_LOAD) || !(s->flags & SEC_LOAD)
+	  || s->size == 0)
 	continue;
 
       sections[count] = s;
@@ -4496,7 +4530,7 @@ lang_check_section_addresses (void)
 
       /* Look for an overlap.  */
       if (s_end >= os_start && s_start <= os_end)
-	einfo (_("%X%P: section %s [%V -> %V] overlaps section %s [%V -> %V]\n"),
+	einfo (_("%X%P: section %s loaded at [%V,%V] overlaps section %s loaded at [%V,%V]\n"),
 	       s->name, s_start, s_end, os->name, os_start, os_end);
     }
 
