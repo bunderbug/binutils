@@ -483,6 +483,8 @@ extern lang_output_section_statement_type *lang_enter_output_section_statement
    etree_type *, int);
 extern void lang_final
   (void);
+extern void lang_relax_sections
+  (bfd_boolean);
 extern void lang_process
   (void);
 extern void lang_section_start
@@ -550,7 +552,9 @@ extern lang_input_statement_type *lang_add_input_file
 extern void lang_add_keepsyms_file
   (const char *);
 extern lang_output_section_statement_type *lang_output_section_statement_lookup
-  (const char *const, int, bfd_boolean);
+  (const char *, int, bfd_boolean);
+extern lang_output_section_statement_type *next_matching_output_section_statement
+  (lang_output_section_statement_type *, int);
 extern void ldlang_add_undef
   (const char *const);
 extern void lang_add_output_format

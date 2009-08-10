@@ -62,10 +62,9 @@ fragment <<EOF
 static void gld${EMULATION_NAME}_before_parse (void);
 static void gld${EMULATION_NAME}_after_open (void);
 static void gld${EMULATION_NAME}_before_allocation (void);
+static void gld${EMULATION_NAME}_after_allocation (void);
 static lang_output_section_statement_type *gld${EMULATION_NAME}_place_orphan
   (asection *, const char *, int);
-static void gld${EMULATION_NAME}_finish (void);
-
 EOF
 
 if [ "x${USE_LIBPATH}" = xyes ] ; then
@@ -1712,23 +1711,32 @@ gld${EMULATION_NAME}_place_orphan (asection *s,
     }
 
   /* Look through the script to see where to place this section.  */
-  if (constraint == 0
-      && (os = lang_output_section_find (secname)) != NULL
-      && os->bfd_section != NULL
-      && (os->bfd_section->flags == 0
-	  || (_bfd_elf_match_sections_by_type (link_info.output_bfd,
-					       os->bfd_section, s->owner, s)
-	      && ((s->flags ^ os->bfd_section->flags)
-		  & (SEC_LOAD | SEC_ALLOC)) == 0)))
-    {
-      /* We already have an output section statement with this
-	 name, and its bfd section has compatible flags.
-	 If the section already exists but does not have any flags
-	 set, then it has been created by the linker, probably as a
-	 result of a --section-start command line switch.  */
-      lang_add_section (&os->children, s, os);
-      return os;
-    }
+  if (constraint == 0)
+    for (os = lang_output_section_find (secname);
+	 os != NULL;
+	 os = next_matching_output_section_statement (os, 0))
+      {
+	/* If we don't match an existing output section, tell
+	   lang_insert_orphan to create a new output section.  */
+	constraint = SPECIAL;
+
+	if (os->bfd_section != NULL
+	    && (os->bfd_section->flags == 0
+		|| (_bfd_elf_match_sections_by_type (link_info.output_bfd,
+						     os->bfd_section,
+						     s->owner, s)
+		    && ((s->flags ^ os->bfd_section->flags)
+			& (SEC_LOAD | SEC_ALLOC)) == 0)))
+	  {
+	    /* We already have an output section statement with this
+	       name, and its bfd section has compatible flags.
+	       If the section already exists but does not have any flags
+	       set, then it has been created by the linker, probably as a
+	       result of a --section-start command line switch.  */
+	    lang_add_section (&os->children, s, os);
+	    return os;
+	  }
+      }
 
   if (!orphan_init_done)
     {
@@ -1821,17 +1829,15 @@ gld${EMULATION_NAME}_place_orphan (asection *s,
 EOF
 fi
 
-if test x"$LDEMUL_FINISH" != xgld"$EMULATION_NAME"_finish; then
+if test x"$LDEMUL_AFTER_ALLOCATION" != xgld"$EMULATION_NAME"_after_allocation; then
 fragment <<EOF
 
 static void
-gld${EMULATION_NAME}_finish (void)
+gld${EMULATION_NAME}_after_allocation (void)
 {
   bfd_boolean need_layout = bfd_elf_discard_info (link_info.output_bfd,
 						  &link_info);
-
   gld${EMULATION_NAME}_map_segments (need_layout);
-  finish_default ();
 }
 EOF
 fi
@@ -2318,14 +2324,14 @@ struct ld_emulation_xfer_struct ld_${EMULATION_NAME}_emulation =
   ${LDEMUL_HLL-hll_default},
   ${LDEMUL_AFTER_PARSE-after_parse_default},
   ${LDEMUL_AFTER_OPEN-gld${EMULATION_NAME}_after_open},
-  ${LDEMUL_AFTER_ALLOCATION-after_allocation_default},
+  ${LDEMUL_AFTER_ALLOCATION-gld${EMULATION_NAME}_after_allocation},
   ${LDEMUL_SET_OUTPUT_ARCH-set_output_arch_default},
   ${LDEMUL_CHOOSE_TARGET-ldemul_default_target},
   ${LDEMUL_BEFORE_ALLOCATION-gld${EMULATION_NAME}_before_allocation},
   ${LDEMUL_GET_SCRIPT-gld${EMULATION_NAME}_get_script},
   "${EMULATION_NAME}",
   "${OUTPUT_FORMAT}",
-  ${LDEMUL_FINISH-gld${EMULATION_NAME}_finish},
+  ${LDEMUL_FINISH-finish_default},
   ${LDEMUL_CREATE_OUTPUT_SECTION_STATEMENTS-NULL},
   ${LDEMUL_OPEN_DYNAMIC_ARCHIVE-gld${EMULATION_NAME}_open_dynamic_archive},
   ${LDEMUL_PLACE_ORPHAN-gld${EMULATION_NAME}_place_orphan},
