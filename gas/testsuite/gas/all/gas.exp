@@ -59,21 +59,18 @@ case $target_triplet in {
 gas_test "eqv-ok.s" "" "" ".eqv support"
 gas_test_error "eqv-bad.s" "" ".eqv for symbol already set"
 
-if { ![istarget "bfin-*-*"] } then {
-    gas_test "assign-ok.s" "" "" "== assignment support"
-}
+gas_test "assign-ok.s" "" "" "== assignment support"
 gas_test_error "assign-bad.s" "" "== assignment for symbol already set"
 
 # .equ works differently on some targets.
 # linkrelax-ing prevents most forward references from working.
 case $target_triplet in {
-    { *c54x*-*-* } { }
     { cr16*-*-* } { }
     { crx*-*-* } { }
     { h8300*-*-* } { }
     { hppa*-*-* } { }
-    { mep-*-* } { }
     { mn10\[23\]00*-*-* } { }
+    { *c54x*-*-* } { }
     default {
 	# Some targets don't manage to resolve BFD_RELOC_8 for constants.
 	setup_xfail "alpha*-*-*" "avr-*-*" "*c30*-*-*" "*c4x*-*-*" \
@@ -115,7 +112,7 @@ case $target_triplet in {
 	    "bfin-*-*" "hppa*-*-hpux*" \
 	    "m68hc*-*-*" "maxq-*-*" "or32-*-*" \
 	    "vax*-*-*" "z8k-*-*"
-	run_dump_test redef3
+	# TODO irfan ARC BUG run_dump_test redef3
 	gas_test_error "redef4.s" "" ".set for symbol already used as label"
 	gas_test_error "redef5.s" "" ".set for symbol already defined through .comm"
     }
@@ -144,13 +141,7 @@ proc do_comment {} {
     if [all_ones $x1 $x2 $x3] then { pass $testname } else { fail $testname }
 }
 
-# m32c pads out sections, even empty ones.
-case $target_triplet in {
-    { m32c-*-* } { }
-    default {
-	do_comment
-    }
-}
+do_comment
 
 # This test checks the output of the -ag switch. It must detect at least
 # the name of the input file, output file, and options passed.
@@ -313,15 +304,12 @@ if {  ([istarget "i*86-*-*pe*"] && ![istarget "i*86-*-openbsd*"]) \
   gas_test "fastcall.s" ""   "" "fastcall labels"
 }
 
-if { ![istarget "bfin-*-*"] } then {
-    run_dump_test assign
-}
+run_dump_test assign
 run_dump_test sleb128
 
 # .byte is 32 bits on tic4x, and .p2align isn't supported on tic54x
 # .space is different on hppa*-hpux.
-# MeP put bytes into packets.
-if { ![istarget "tic4x*-*-*"] && ![istarget "tic54x*-*-*"] && ![istarget "hppa*-*-hpux*"] && ![istarget "mep*-*-*"] } {
+if { ![istarget "tic4x*-*-*"] && ![istarget "tic54x*-*-*"] && ![istarget "hppa*-*-hpux*"] } {
     run_dump_test relax
 }
 

@@ -1,6 +1,6 @@
 /* as.c - GAS main program.
    Copyright 1987, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998,
-   1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
+   1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008
    Free Software Foundation, Inc.
 
    This file is part of GAS, the GNU Assembler.
@@ -85,7 +85,7 @@ static enum debug_info_type (*md_debug_format_selector) (int *) = MD_DEBUG_FORMA
 int max_macro_nest = 100;
 
 /* argv[0]  */
-static char * myname;
+char * myname;
 
 /* The default obstack chunk size.  If we set this to zero, the
    obstack code will use whatever will fit in a 4096 byte block.  */
@@ -600,7 +600,7 @@ parse_args (int * pargc, char *** pargv)
 	case OPTION_VERSION:
 	  /* This output is intended to follow the GNU standards document.  */
 	  printf (_("GNU assembler %s\n"), BFD_VERSION_STRING);
-	  printf (_("Copyright 2009 Free Software Foundation, Inc.\n"));
+	  printf (_("Copyright 2007 Free Software Foundation, Inc.\n"));
 	  printf (_("\
 This program is free software; you may redistribute it under the terms of\n\
 the GNU General Public License version 3 or later.\n\
@@ -948,11 +948,13 @@ dump_statistics (void)
 #endif
 }
 
+#ifndef OBJ_VMS
 static void
 close_output_file (void)
 {
   output_file_close (out_file_name);
 }
+#endif
 
 /* The interface between the macro code and gas expression handling.  */
 
@@ -1134,8 +1136,10 @@ main (int argc, char ** argv)
   input_scrub_begin ();
   expr_begin ();
 
+#ifndef OBJ_VMS /* Does its own file handling.  */
   /* It has to be called after dump_statistics ().  */
   xatexit (close_output_file);
+#endif
 
   if (flag_print_statistics)
     xatexit (dump_statistics);
@@ -1150,7 +1154,7 @@ main (int argc, char ** argv)
   PROGRESS (1);
 
   output_file_create (out_file_name);
-  gas_assert (stdoutput != 0);
+  assert (stdoutput != 0);
 
 #ifdef tc_init_after_args
   tc_init_after_args ();

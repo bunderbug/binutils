@@ -1,6 +1,6 @@
 /* symbols.c -symbol table-
    Copyright 1987, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998,
-   1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
+   1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008
    Free Software Foundation, Inc.
 
    This file is part of GAS, the GNU Assembler.
@@ -59,7 +59,7 @@ symbolS abs_symbol;
 #define LOCAL_LABEL_CHAR	'\002'
 
 struct obstack notes;
-#ifdef TE_PE
+#ifdef USE_UNIQUE
 /* The name of an external symbol which is
    used to make weak PE symbol names unique.  */
 const char * an_external_name;
@@ -187,7 +187,7 @@ static unsigned long local_symbol_conversion_count;
 
 /* Create a local symbol and insert it into the local hash table.  */
 
-static struct local_symbol *
+struct local_symbol *
 local_symbol_make (const char *name, segT section, valueT value, fragS *frag)
 {
   char *name_copy;
@@ -217,7 +217,7 @@ local_symbol_convert (struct local_symbol *locsym)
 {
   symbolS *ret;
 
-  gas_assert (locsym->lsy_marker == NULL);
+  assert (locsym->lsy_marker == NULL);
   if (local_symbol_converted_p (locsym))
     return local_symbol_get_real_symbol (locsym);
 
@@ -879,11 +879,11 @@ verify_symbol_chain (symbolS *rootP, symbolS *lastP)
 
   for (; symbol_next (symbolP) != NULL; symbolP = symbol_next (symbolP))
     {
-      gas_assert (symbolP->bsym != NULL);
-      gas_assert (symbolP->sy_next->sy_previous == symbolP);
+      assert (symbolP->bsym != NULL);
+      assert (symbolP->sy_next->sy_previous == symbolP);
     }
 
-  gas_assert (lastP == symbolP);
+  assert (lastP == symbolP);
 }
 
 #ifdef OBJ_COMPLEX_RELC
@@ -1144,13 +1144,13 @@ resolve_symbol_value (symbolS *symp)
 	do_symbol:
 	  if (S_IS_WEAKREFR (symp))
 	    {
-	      gas_assert (final_val == 0);
+	      assert (final_val == 0);
 	      if (S_IS_WEAKREFR (add_symbol))
 		{
-		  gas_assert (add_symbol->sy_value.X_op == O_symbol
+		  assert (add_symbol->sy_value.X_op == O_symbol
 			  && add_symbol->sy_value.X_add_number == 0);
 		  add_symbol = add_symbol->sy_value.X_add_symbol;
-		  gas_assert (! S_IS_WEAKREFR (add_symbol));
+		  assert (! S_IS_WEAKREFR (add_symbol));
 		  symp->sy_value.X_add_symbol = add_symbol;
 		}
 	    }
@@ -1948,8 +1948,7 @@ copy_symbol_attributes (symbolS *dest, symbolS *src)
 
   /* In an expression, transfer the settings of these flags.
      The user can override later, of course.  */
-#define COPIED_SYMFLAGS	(BSF_FUNCTION | BSF_OBJECT \
-			 | BSF_GNU_INDIRECT_FUNCTION)
+#define COPIED_SYMFLAGS	(BSF_FUNCTION | BSF_OBJECT)
   dest->bsym->flags |= src->bsym->flags & COPIED_SYMFLAGS;
 
 #ifdef OBJ_COPY_SYMBOL_ATTRIBUTES
@@ -2053,7 +2052,6 @@ S_FORCE_RELOC (symbolS *s, int strict)
 
   return ((strict
 	   && ((s->bsym->flags & BSF_WEAK) != 0
-	       || (s->bsym->flags & BSF_GNU_INDIRECT_FUNCTION) != 0
 	       || (EXTERN_FORCE_RELOC
 		   && (s->bsym->flags & BSF_GLOBAL) != 0)))
 	  || s->bsym->section == undefined_section
@@ -2204,7 +2202,7 @@ S_SET_EXTERNAL (symbolS *s)
   s->bsym->flags |= BSF_GLOBAL;
   s->bsym->flags &= ~(BSF_LOCAL | BSF_WEAK);
 
-#ifdef TE_PE
+#ifdef USE_UNIQUE
   if (! an_external_name && S_GET_NAME(s)[0] != '.')
     an_external_name = S_GET_NAME (s);
 #endif
@@ -2987,7 +2985,7 @@ symbol_relc_make_sym (symbolS * sym)
   char typetag;
   int sname_len;
 
-  gas_assert (sym != NULL);
+  assert (sym != NULL);
 
   /* Recurse to symbol_relc_make_expr if this symbol
      is defined as an expression or a plain value.  */
@@ -3052,7 +3050,7 @@ symbol_relc_make_expr (expressionS * exp)
 
   operands[0] = operands[1] = operands[2] = NULL;
 
-  gas_assert (exp != NULL);
+  assert (exp != NULL);
 
   /* Match known operators -> fill in opstr, arity, operands[] and fall
      through to construct subexpression fragments; may instead return 
@@ -3165,7 +3163,7 @@ symbol_relc_make_expr (expressionS * exp)
 			       + (arity >= 2 ? (strlen (operands[1]) + 1 ) : 0)
 			       + (arity >= 3 ? (strlen (operands[2]) + 0 ) : 0)
 			       + 1);
-      gas_assert (concat_string != NULL);
+      assert (concat_string != NULL);
       
       /* Format the thing.  */
       sprintf (concat_string, 

@@ -37,6 +37,14 @@ AC_ARG_ENABLE(targets,
   *)	    enable_targets=$enableval ;;
 esac])dnl
 
+AC_ARG_ENABLE(commonbfdlib,
+[  --enable-commonbfdlib   build shared BFD/opcodes/libiberty library],
+[case "${enableval}" in
+  yes) commonbfdlib=true ;;
+  no)  commonbfdlib=false ;;
+  *)   AC_MSG_ERROR([bad value ${enableval} for BFD commonbfdlib option]) ;;
+esac])dnl
+
 ac_checking=yes
 if grep '^RELEASE=y' ${srcdir}/../bfd/Makefile.am >/dev/null 2>/dev/null ; then
   ac_checking=
@@ -137,18 +145,13 @@ for this_target in $target $canon_targets ; do
 	AC_MSG_WARN(GAS support for ${generic_target} is preliminary and a work in progress)
 	;;
 
-      microblaze*)
-        ;;
-
       mips-sony-bsd*)
 	;;
       mips-*-bsd*)
 	AC_MSG_ERROR(Unknown vendor for mips-bsd configuration.)
 	;;
 
-changequote(,)dnl
-      ppc-*-aix[5-9].*)
-changequote([,])dnl
+      ppc-*-aix5.*)
 	AC_DEFINE(AIX_WEAK_SUPPORT, 1,
 		  [Define if using AIX 5.2 value for C_WEAKEXT.])
 	;;
@@ -305,7 +308,7 @@ changequote([,])dnl
         fi
         ;;
 
-      fr30 | ip2k | iq2000 | lm32 | m32r | openrisc)
+      fr30 | ip2k | iq2000 | m32r | openrisc)
 	using_cgen=yes
 	;;
 
@@ -386,10 +389,6 @@ changequote([,])dnl
       te_file=$em
     fi
 
-   case ${te_file} in
-      vms) extra_objects="$extra_objects te-vms.o" ;;
-   esac
- 
 # From target name and format, produce a list of supported emulations.
 
     case ${generic_target}-${fmt} in
@@ -613,7 +612,7 @@ AM_MAINTAINER_MODE
 AM_CONDITIONAL(GENINSRC_NEVER, false)
 AC_EXEEXT
 
-AC_CHECK_HEADERS(string.h stdlib.h memory.h strings.h unistd.h stdarg.h varargs.h errno.h sys/types.h limits.h time.h sys/stat.h)
+AC_CHECK_HEADERS(string.h stdlib.h memory.h strings.h unistd.h stdarg.h varargs.h errno.h sys/types.h limits.h)
 
 # Put this here so that autoconf's "cross-compiling" message doesn't confuse
 # people who are not cross-compiling but are compiling cross-assemblers.
@@ -701,23 +700,10 @@ AC_CHECK_DECLS([vsnprintf])
 
 BFD_BINARY_FOPEN
 
-# Support for VMS timestamps via cross compile
-
-if test "$ac_cv_header_time_h" = yes; then
-  GAS_HAVE_TIME_TYPE_MEMBER(struct tm, tm_gmtoff)
-fi
-
-if test "$ac_cv_header_sys_stat_h" = yes; then
-    GAS_HAVE_SYS_STAT_TYPE_MEMBER(struct stat, st_mtim, tv_sec)
-    GAS_HAVE_SYS_STAT_TYPE_MEMBER(struct stat, st_mtim, tv_nsec)
-fi
-
-
-dnl Required for html, pdf, install-pdf and install-html targets.
+dnl Required for html and install-html targets.
 AC_SUBST(datarootdir)
 AC_SUBST(docdir)
 AC_SUBST(htmldir)
-AC_SUBST(pdfdir)
 
 dnl This must come last.
 
@@ -727,7 +713,7 @@ dnl the build directory which include the right .h file.  Make sure
 dnl the old symlinks don't exist, so that a reconfigure in an existing
 dnl directory behaves reasonably.
 
-AC_CONFIG_FILES(Makefile doc/Makefile po/Makefile.in:po/Make-in)
+AC_CONFIG_FILES(Makefile config/extlib/Makefile doc/Makefile po/Makefile.in:po/Make-in)
 AC_CONFIG_COMMANDS([default],
 [rm -f targ-cpu.c targ-cpu.h obj-format.h obj-format.c targ-env.h atof-targ.c itbl-cpu.h
  echo '#include "tc-'"${target_cpu_type}"'.h"' > targ-cpu.h
