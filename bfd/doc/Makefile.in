@@ -47,19 +47,15 @@ DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/../config/acx.m4 \
 	$(top_srcdir)/../config/depstand.m4 \
-	$(top_srcdir)/../config/extensions.m4 \
 	$(top_srcdir)/../config/gettext-sister.m4 \
 	$(top_srcdir)/../config/lead-dot.m4 \
-	$(top_srcdir)/../config/nls.m4 \
-	$(top_srcdir)/../config/override.m4 \
-	$(top_srcdir)/../config/po.m4 \
-	$(top_srcdir)/../config/proginstall.m4 \
+	$(top_srcdir)/../config/nls.m4 $(top_srcdir)/../config/po.m4 \
 	$(top_srcdir)/../config/progtest.m4 \
 	$(top_srcdir)/../config/stdint.m4 $(top_srcdir)/../libtool.m4 \
 	$(top_srcdir)/../ltoptions.m4 $(top_srcdir)/../ltsugar.m4 \
-	$(top_srcdir)/../ltversion.m4 $(top_srcdir)/../lt~obsolete.m4 \
-	$(top_srcdir)/bfd.m4 $(top_srcdir)/warning.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.in
+	$(top_srcdir)/../ltversion.m4 $(top_srcdir)/bfd.m4 \
+	$(top_srcdir)/warning.m4 $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/../mkinstalldirs
@@ -115,7 +111,6 @@ DATADIRNAME = @DATADIRNAME@
 DEBUGDIR = @DEBUGDIR@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -145,7 +140,6 @@ LIBINTL_DEP = @LIBINTL_DEP@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
-LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
@@ -156,12 +150,8 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MSGFMT = @MSGFMT@
 MSGMERGE = @MSGMERGE@
 NM = @NM@
-NMEDIT = @NMEDIT@
 NO_WERROR = @NO_WERROR@
-OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
-OTOOL = @OTOOL@
-OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -176,26 +166,17 @@ REPORT_BUGS_TEXI = @REPORT_BUGS_TEXI@
 REPORT_BUGS_TO = @REPORT_BUGS_TO@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
-SHARED_LDFLAGS = @SHARED_LDFLAGS@
-SHARED_LIBADD = @SHARED_LIBADD@
 SHELL = @SHELL@
 STRIP = @STRIP@
 TDEFINES = @TDEFINES@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WARN_CFLAGS = @WARN_CFLAGS@
+WIN32LDFLAGS = @WIN32LDFLAGS@
+WIN32LIBADD = @WIN32LIBADD@
 XGETTEXT = @XGETTEXT@
-ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
-ac_ct_DSYMUTIL = @ac_ct_DSYMUTIL@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
-ac_ct_LIPO = @ac_ct_LIPO@
-ac_ct_NMEDIT = @ac_ct_NMEDIT@
-ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
-ac_ct_OTOOL = @ac_ct_OTOOL@
-ac_ct_OTOOL64 = @ac_ct_OTOOL64@
-ac_ct_RANLIB = @ac_ct_RANLIB@
-ac_ct_STRIP = @ac_ct_STRIP@
 all_backends = @all_backends@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
@@ -221,6 +202,7 @@ build_vendor = @build_vendor@
 datadir = @datadir@
 datarootdir = @datarootdir@
 docdir = @docdir@
+dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 host = @host@
 host_alias = @host_alias@
@@ -234,6 +216,7 @@ infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
+localedir = @localedir@
 localstatedir = @localstatedir@
 lt_ECHO = @lt_ECHO@
 mandir = @mandir@
@@ -242,6 +225,7 @@ oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
+psdir = @psdir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
@@ -347,7 +331,6 @@ BFD_H_DEP = \
 	$(srcdir)/../format.c		\
 	$(srcdir)/../linker.c		\
 	$(srcdir)/../simple.c		\
-	$(srcdir)/../compress.c		\
 	$(srcdir)/header.sed		\
 	$(srcdir)/proto.str		\
 	$(srcdir)/../version.h		\
@@ -359,7 +342,6 @@ CLEANFILES = *.p *.ip
 DISTCLEANFILES = bfd.?? bfd.??? bfd.h libbfd.h libcoff.h texput.log \
 	$(am__append_1)
 MAINTAINERCLEANFILES = $(DOCFILES) bfd.info
-pdf__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 html__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 all: all-am
 
@@ -479,10 +461,13 @@ dist-info: $(INFO_DEPS)
 	    $(srcdir)/*) base=`echo "$$base" | sed "s|^$$srcdirstrip/||"`;; \
 	  esac; \
 	  if test -f $$base; then d=.; else d=$(srcdir); fi; \
-	  for file in $$d/$$base*; do \
-	    relfile=`expr "$$file" : "$$d/\(.*\)"`; \
-	    test -f $(distdir)/$$relfile || \
-	      cp -p $$file $(distdir)/$$relfile; \
+	  base_i=`echo "$$base" | sed 's|\.info$$||;s|$$|.i|'`; \
+	  for file in $$d/$$base $$d/$$base-[0-9] $$d/$$base-[0-9][0-9] $$d/$$base_i[0-9] $$d/$$base_i[0-9][0-9]; do \
+	    if test -f $$file; then \
+	      relfile=`expr "$$file" : "$$d/\(.*\)"`; \
+	      test -f $(distdir)/$$relfile || \
+		cp -p $$file $(distdir)/$$relfile; \
+	    else :; fi; \
 	  done; \
 	done
 
@@ -629,9 +614,13 @@ uninstall-am:
 
 
 $(MKDOC): $(srcdir)/chew.c
-	$(CC_FOR_BUILD) -o chew.$$$$ $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) \
-	  $(H_CFLAGS) $(INCLUDES) $(srcdir)/chew.c; \
+	$(CC_FOR_BUILD) -o chew.$$$$ $(srcdir)/chew.c \
+	  $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) $(H_CFLAGS) \
+	  $(INCLUDES); \
 	$(SHELL) $(srcdir)/../../move-if-change chew.$$$$ $(MKDOC)
+
+chew.o: chew.c
+	$(CC_FOR_BUILD) -c $(INCLUDES) $(H_CFLAGS) $(CFLAGS_FOR_BUILD) $(srcdir)/chew.c
 
 protos: libbfd.h libcoff.h bfd.h
 
@@ -809,18 +798,6 @@ bfdver.texi: $(srcdir)/Makefile.in
 # We want install to imply install-info as per GNU standards, despite the
 # cygnus option.
 install: install-info
-
-install-pdf: install-pdf-am
-
-install-pdf-am: $(PDFS)
-	@$(NORMAL_INSTALL)
-	test -z "$(pdfdir)" || $(mkinstalldirs) "$(DESTDIR)$(pdfdir)"
-	@list='$(PDFS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f=$(pdf__strip_dir) \
-	  echo " $(INSTALL_DATA) '$$d$$p' '$(DESTDIR)$(pdfdir)/$$f'"; \
-	  $(INSTALL_DATA) "$$d$$p" "$(DESTDIR)$(pdfdir)/$$f"; \
-	done
 
 install-html: install-html-am
 
