@@ -260,10 +260,12 @@ gld${EMULATION_NAME}_add_options
     {"no-seh", no_argument, NULL, OPTION_NO_SEH},
     {"no-bind", no_argument, NULL, OPTION_NO_BIND},
     {"wdmdriver", no_argument, NULL, OPTION_WDM_DRIVER},
-    {"tsaware", no_argument, NULL, OPTION_TERMINAL_SERVER_AWARE},    {NULL, no_argument, NULL, 0}
+    {"tsaware", no_argument, NULL, OPTION_TERMINAL_SERVER_AWARE},
+    {NULL, no_argument, NULL, 0}
   };
 
-  *longopts = xrealloc (*longopts, nl * sizeof (struct option) + sizeof (xtra_long));
+  *longopts
+    = xrealloc (*longopts, nl * sizeof (struct option) + sizeof (xtra_long));
   memcpy (*longopts + nl, &xtra_long, sizeof (xtra_long));
 }
 
@@ -370,7 +372,7 @@ gld_${EMULATION_NAME}_list_options (FILE *file)
   fprintf (file, _("  --no-isolation		 Image understands isolation but do not isolate the image\n"));
   fprintf (file, _("  --no-seh			 Image does not use SEH. No SE handler may\n\
 				       be called in this image\n"));
-  fprintf (file, _("  --no-bind		 	 Do not bind this image\n"));
+  fprintf (file, _("  --no-bind			 Do not bind this image\n"));
   fprintf (file, _("  --wdmdriver		 Driver uses the WDM model\n"));
   fprintf (file, _("  --tsaware       		 Image is Terminal Server aware\n"));
 #endif
@@ -757,15 +759,18 @@ gld_${EMULATION_NAME}_set_symbols (void)
       if (link_info.relocatable)
 	init[IMAGEBASEOFF].value = 0;
       else if (init[DLLOFF].value || (link_info.shared && !link_info.pie))
+	{
 #ifdef DLL_SUPPORT
-	init[IMAGEBASEOFF].value = (pep_enable_auto_image_base) ?
-	  compute_dll_image_base (output_filename) : NT_DLL_IMAGE_BASE;
+	  init[IMAGEBASEOFF].value = (pep_enable_auto_image_base
+				      ? compute_dll_image_base (output_filename)
+				      : NT_DLL_IMAGE_BASE);
 #else
-	init[IMAGEBASEOFF].value = NT_DLL_IMAGE_BASE;
+	  init[IMAGEBASEOFF].value = NT_DLL_IMAGE_BASE;
 #endif
+	}
       else
 	init[IMAGEBASEOFF].value = NT_EXE_IMAGE_BASE;
-	init[MSIMAGEBASEOFF].value = init[IMAGEBASEOFF].value;
+      init[MSIMAGEBASEOFF].value = init[IMAGEBASEOFF].value;
     }
 
   /* Don't do any symbol assignments if this is a relocatable link.  */
@@ -809,27 +814,13 @@ gld_${EMULATION_NAME}_set_symbols (void)
 static void
 gld_${EMULATION_NAME}_after_parse (void)
 {
-  /* The Windows libraries are designed for the linker to treat the
-     entry point as an undefined symbol.  Otherwise, the .obj that
-     defines mainCRTStartup is brought in because it is the first
-     encountered in libc.lib and it has other symbols in it which will
-     be pulled in by the link process.  To avoid this, we act as
-     though the user specified -u with the entry point symbol.
-
-     This function is called after the linker script and command line
-     options have been read, so at this point we know the right entry
-     point.  This function is called before the input files are
-     opened, so registering the symbol as undefined will make a
-     difference.  */
-
-  if (! link_info.relocatable && entry_symbol.name != NULL)
-    ldlang_add_undef (entry_symbol.name);
-
   /* PR ld/6744:  Warn the user if they have used an ELF-only
      option hoping it will work on PE+.  */
   if (link_info.export_dynamic)
     einfo (_("%P: warning: --export-dynamic is not supported for PE+ "
       "targets, did you mean --export-all-symbols?\n"));
+
+  after_parse_default ();
 }
 
 /* pep-dll.c directly accesses pep_data_import_dll,
@@ -1057,7 +1048,7 @@ This should work unless it involves constant data structures referencing symbols
 		}
 
 	      pep_walk_relocs_of_symbol (&link_info, undef->root.string,
-					make_import_fixup);
+					 make_import_fixup);
 
 	      /* Let's differentiate it somehow from defined.  */
 	      undef->type = bfd_link_hash_defweak;
@@ -1561,21 +1552,32 @@ gld_${EMULATION_NAME}_place_orphan (asection *s,
 
   lang_list_init (&add_child);
 
-  if (constraint == 0
-      && (os = lang_output_section_find (secname)) != NULL
-      && os->bfd_section != NULL
-      && (os->bfd_section->flags == 0
-	  || ((s->flags ^ os->bfd_section->flags)
-	      & (SEC_LOAD | SEC_ALLOC)) == 0))
-    {
-      /* We already have an output section statement with this
-	 name, and its bfd section has compatible flags.
-	 If the section already exists but does not have any flags set,
-	 then it has been created by the linker, probably as a result of
-	 a --section-start command line switch.  */
-      lang_add_section (&add_child, s, os);
-    }
-  else
+  os = NULL;
+  if (constraint == 0)
+    for (os = lang_output_section_find (secname);
+	 os != NULL;
+	 os = next_matching_output_section_statement (os, 0))
+      {
+	/* If we don't match an existing output section, tell
+	   lang_insert_orphan to create a new output section.  */
+	constraint = SPECIAL;
+
+	if (os->bfd_section != NULL
+	    && (os->bfd_section->flags == 0
+		|| ((s->flags ^ os->bfd_section->flags)
+		    & (SEC_LOAD | SEC_ALLOC)) == 0))
+	  {
+	    /* We already have an output section statement with this
+	       name, and its bfd section has compatible flags.
+	       If the section already exists but does not have any flags set,
+	       then it has been created by the linker, probably as a result of
+	       a --section-start command line switch.  */
+	    lang_add_section (&add_child, s, os);
+	    break;
+	  }
+      }
+
+  if (os == NULL)
     {
       static struct orphan_save hold[] =
 	{
